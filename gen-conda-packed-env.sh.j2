@@ -8,7 +8,7 @@
 set -e
 
 umask 0002
-
+{% if extra_cmd_before_install %}{{ '\n' }}{{extra_cmd_before_install}}{{ '\n' }}{% endif %}
 . /opt/conda/etc/profile.d/conda.sh
 
 conda install conda -y
