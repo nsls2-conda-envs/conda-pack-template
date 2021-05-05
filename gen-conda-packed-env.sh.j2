@@ -21,7 +21,7 @@ channels="{{ channels }}"
 
 time conda create \
     -n ${env_name} \
-    ${channels} --override-channels \
+    ${channels} --override-channels -y \
     python${python_version} conda-pack \
     ${pkg} \
     ${extra_packages}
@@ -31,7 +31,7 @@ conda activate ${env_name}
 time conda env export \
     -n ${env_name} \
     -f /build/${env_name}.yml \
-    ${channels} --override-channels
+    ${channels} --override-channels -y
 
 # Assuming the "build" dir is mounted via the "docker run -v ..."
 time conda-pack -o /build/${env_name}.tar.gz
