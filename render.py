@@ -5,12 +5,12 @@ from jinja2 import Template
 params = {
     # "docker_image": "nsls2/debian-with-miniconda:v0.1.2",
     "docker_image": "quay.io/condaforge/linux-anvil-comp7:latest",
-    "env_name": "bmm-analysis",
-    "python_version": "3.9",
-    "pkg_name": "",
+    "env_name": "tomviz",
+    "python_version": "3.7",
+    "pkg_name": "tomviz",
     "pkg_version": "",
-    "extra_packages": "numpy scipy hdf5 matplotlib pyqt pyyaml pyside2",
-    "channels": "-c conda-forge",
+    "extra_packages": "databroker area-detector-handlers tomopy pyxrf",
+    "channels": "-c conda-forge -c nsls2forge -c defaults",
 }
 
 script_location = os.path.abspath(os.path.dirname(__file__))
