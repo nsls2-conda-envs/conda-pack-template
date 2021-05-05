@@ -1,0 +1,3 @@
+conda-pack
+ipython
+jinja2
