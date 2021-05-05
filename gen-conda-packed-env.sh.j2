@@ -3,7 +3,7 @@
 #!/bin/bash
 
 # To be run as:
-# $ docker run -it --rm -v $PWD:/build nsls2/debian-with-miniconda:v0.1.2 bash /build/gen-conda-packed-env-{{ env_name }}.sh
+# $ docker run -it --rm -v $PWD:/build {{ docker_image }} bash /build/{{ script_name }}
 
 set -e
 
