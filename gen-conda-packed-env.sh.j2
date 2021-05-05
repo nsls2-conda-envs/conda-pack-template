@@ -28,6 +28,8 @@ time conda create \
 
 conda activate ${env_name}
 
+{{ extra_cmd_after_install }}
+
 time conda env export \
     -n ${env_name} \
     -f /build/${env_name}.yml \
