@@ -13,8 +13,10 @@ params = {
     "channels": "-c conda-forge",
 }
 
-template_file = "gen-conda-packed-env.sh.j2"
-name = os.path.splitext(os.path.splitext(template_file)[0])
+script_location = os.path.abspath(os.path.dirname(__file__))
+print(f'Script location: {script_location}')
+template_file = os.path.join(script_location, "gen-conda-packed-env.sh.j2")
+name = os.path.splitext(os.path.splitext(os.path.basename(template_file))[0])
 script_name = f"{name[0]}-{params['env_name']}{name[1]}"
 params["script_name"] = script_name
 
