@@ -37,7 +37,7 @@ time conda env export \
 time conda-pack -o /build/${env_name}.tar.gz
 
 time openssl sha256 /build/${env_name}.tar.gz > /build/${env_name}-sha256sum.txt
-chmod -v 664 /build/${env_name}.*
+chmod -v 664 /build/${env_name}[.-]*
 
 conda deactivate
 
