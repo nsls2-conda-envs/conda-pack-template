@@ -5,12 +5,12 @@ from jinja2 import Template
 params = {
     # "docker_image": "nsls2/debian-with-miniconda:v0.1.2",
     "docker_image": "quay.io/condaforge/linux-anvil-comp7:latest",
-    "env_name": "tomviz",
-    "python_version": "3.7",
-    "pkg_name": "tomviz",
+    "env_name": "astra-toolbox",
+    "python_version": "3.8",
+    "pkg_name": "",
     "pkg_version": "",
-    "extra_packages": "databroker area-detector-handlers tomopy pyxrf",
-    "channels": "-c conda-forge -c nsls2forge -c defaults",
+    "extra_packages": "astra-toolbox tomopy",
+    "channels": "-c astra-toolbox -c conda-forge",
 }
 
 script_location = os.path.abspath(os.path.dirname(__file__))
