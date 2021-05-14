@@ -10,7 +10,7 @@ params = {
     "pkg_name": "",
     "pkg_version": "",
     "extra_packages": "astra-toolbox tomopy",
-    "channels": "-c astra-toolbox -c conda-forge",
+    "channels": "-c astra-toolbox/label/dev -c conda-forge",
 }
 
 script_location = os.path.abspath(os.path.dirname(__file__))
