@@ -1,0 +1,7 @@
+env_name: "astra-toolbox"
+python_version: "3.8"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "astra-toolbox tomopy"
+channels: "-c astra-toolbox/label/dev -c conda-forge"
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
