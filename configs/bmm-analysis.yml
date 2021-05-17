@@ -1,0 +1,7 @@
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
+env_name: "bmm-analysis"
+python_version: "3.9"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "numpy scipy hdf5 matplotlib pyqt pyyaml pyside2"
+channels: "-c conda-forge"
