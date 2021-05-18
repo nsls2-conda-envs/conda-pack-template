@@ -1,0 +1,7 @@
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
+env_name: "n2sn"
+python_version: "3.9"
+pkg_name: "n2snusertools"
+pkg_version: "0.3.6"
+extra_packages: ""
+channels: "-c nsls2forge -c defaults"
