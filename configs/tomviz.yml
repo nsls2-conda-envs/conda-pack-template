@@ -1,0 +1,7 @@
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
+env_name: "tomviz"
+python_version: "3.7"
+pkg_name: "tomviz"
+pkg_version: ""
+extra_packages: "databroker area-detector-handlers tomopy pyxrf"
+channels: "-c conda-forge -c nsls2forge -c defaults"
