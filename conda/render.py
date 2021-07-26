@@ -43,3 +43,24 @@ if __name__ == "__main__":
         template = Template(f.read())
 
     text = template.render(os=os, config_file=args.config_file, **params)
+    print(text)
+
+    with open(script_name, "w") as f:
+        f.write(text)
+
+    # RENDER Dockerfile
+    template_file = os.path.join(script_location, "Dockerfile.j2")
+
+    name = os.path.splitext(os.path.basename(template_file))[0]
+
+    script_name = f"{name}"
+    params["script_name"] = script_name
+
+    with open(template_file) as f:
+        template = Template(f.read())
+
+    text = template.render(os=os, **params)
+    print(text)
+
+    with open(script_name, "w") as f:
+        f.write(text)
