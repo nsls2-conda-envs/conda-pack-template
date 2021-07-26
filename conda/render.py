@@ -1,5 +1,4 @@
 import argparse
-import argparse
 import os
 
 import yaml
@@ -12,7 +11,6 @@ if __name__ == "__main__":
             "file to produce a conda-pack'd environment."
         )
     )
-
     parser.add_argument(
         "-c", "--config-file", dest="config_file", help="the input config file"
     )
@@ -25,46 +23,23 @@ if __name__ == "__main__":
 
     with open(config_file) as f:
         params = yaml.load(f, Loader=yaml.SafeLoader)
-        params.setdefault('image', "docker_image")
         params.setdefault('docker_upload', "dockerhub;ghcr;quay")
         params.setdefault('zenodo_upload', "yes")
-        params.setdefault('zenodo_upload_file_path', f"{params['env_name']}.tar.gz")
         os.environ.update(params)
 
-        script_location = os.path.abspath(os.path.dirname(__file__))
-        print(f"Script location: {script_location}")
+    script_location = os.path.abspath(os.path.dirname(__file__))
+    print(f"Script location: {script_location}")
 
-        # RENDER runner.sh
-        template_file = os.path.join(script_location, "runner.sh.j2")
-        # Get the base name, i.e. 'gen-conda-packed-env.sh':
-        name = os.path.splitext(os.path.basename(template_file))[0]
-        # Split the base name into ('gen-conda-packed-env', '.sh'):
-        name = os.path.splitext(name)
-        script_name = f"{name[0]}-{params['env_name']}{name[1]}"
-        params["script_name"] = script_name
+    # RENDER runner.sh
+    template_file = os.path.join(script_location, "runner.sh.j2")
+    # Get the base name, i.e. 'gen-conda-packed-env.sh':
+    name = os.path.splitext(os.path.basename(template_file))[0]
+    # Split the base name into ('gen-conda-packed-env', '.sh'):
+    name = os.path.splitext(name)
+    script_name = f"{name[0]}-{params['env_name']}{name[1]}"
+    params["script_name"] = script_name
 
-        with open(template_file) as f:
-            template = Template(f.read())
+    with open(template_file) as f:
+        template = Template(f.read())
 
-        text = template.render(os=os, config_file=args.config_file, **params)
-        print(text)
-
-        with open(script_name, "w") as f:
-            f.write(text)
-
-        # RENDER Dockerfile
-        template_file = os.path.join(script_location, "Dockerfile.j2")
-
-        name = os.path.splitext(os.path.basename(template_file))[0]
-
-        script_name = f"{name}"
-        params["script_name"] = script_name
-
-        with open(template_file) as f:
-            template = Template(f.read())
-
-        text = template.render(os=os, **params)
-        print(text)
-
-        with open(script_name, "w") as f:
-            f.write(text)
+    text = template.render(os=os, config_file=args.config_file, **params)
