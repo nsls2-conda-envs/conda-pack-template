@@ -29,7 +29,6 @@ docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
 docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:latest
 {% elif key == "dockerhub" %}
 echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
 docker tag ${env_name}:${timestamp} $DOCKER_REPO:${timestamp}
 docker tag ${env_name}:${timestamp} $DOCKER_REPO:latest
 docker push $DOCKER_REPO:${timestamp}
