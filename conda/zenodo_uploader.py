@@ -2,17 +2,25 @@ import os
 from pathlib import Path
 import yaml
 from pyzenodo3.upload import upload
+import argparse
 
-def upload_to_zenodo(config_file="n2sn.yml"):
-    with open(config_file, "r") as fp:
-        yaml_file = yaml.load(fp, Loader=yaml.BaseLoader)
-        upload(
-            datafn=Path(yaml_file.get("zenodo_upload_file_path")),
-            token=os.getenv("ZENODO_ACCESS_TOKEN", ""),
-            base_url="https://sandbox.zenodo.org/api/",
-            metafn=Path(""),
-        )
+def upload_to_zenodo(file_name_to_upload):
+            upload(
+                datafn=Path(file_name_to_upload),
+                token=os.getenv("ZENODO_ACCESS_TOKEN", ""),
+                base_url="https://sandbox.zenodo.org/api/",
+                metafn=Path(""),
+            )
 
 if __name__ == "__main__":
-    upload_to_zenodo()
+    parser = argparse.ArgumentParser(
+        description=(
+            "Upload files to Zenodo."
+        )
+    )
+    parser.add_argument(
+        "-f", "--file", dest="file_name_to_upload", help="the input config file"
+    )
+    args = parser.parse_args()
+    upload_to_zenodo(args.file_name_to_upload)
     print("Upload Done!")
