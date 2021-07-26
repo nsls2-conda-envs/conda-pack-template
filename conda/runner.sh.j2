@@ -3,31 +3,39 @@
 sed -e 's/: [^:\/\/]/="/g;s/ *=/=/g' {{config_file}} >temp.yml
 source temp.yml
 rm temp.yml
+export docker_upload="dockerhub;ghcr;quay"
+export zenodo_upload=yes
+export zenodo_upload_file_path=${env_name}.tar.gz
+
+if [ -f "${env_name}.tar.gz" ]; then
+    echo -e "File ${env_name}.tar.gz exists. Move it or remove it before proceeding."
+    exit 1
+fi
 
 timestamp=$(date +%Y%m%d%H%M%S)
 
-docker image build . -t ${image}:latest \
-                     -t ${image}:${timestamp}
-docker run -ti --name temp ${image}:${timestamp} bash -l /home/conda/export.sh
+docker image build . -t ${env_name}:latest \
+                     -t ${env_name}:${timestamp}
+docker run -ti --name temp ${env_name}:${timestamp} bash -l /home/conda/export.sh
 docker cp temp:/home/conda/. .
 docker rm -f temp
 
 {% for key in os.getenv("docker_upload").split(";") %}
 {% if key == "ghcr" %}
 echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
-docker tag ${image}:${timestamp} ghcr.io/$GITHUB_USERNAME/${image}:${timestamp}
-docker tag ${image}:${timestamp} ghcr.io/$GITHUB_USERNAME/${image}:latest
-docker image push ghcr.io/$GITHUB_USERNAME/${image}:${timestamp}
-docker image push ghcr.io/$GITHUB_USERNAME/${image}:latest
+docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
+docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:latest
+docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
+docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:latest
 {% elif key == "dockerhub" %}
 echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
 echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-docker tag ${image}:${timestamp} $DOCKER_REPO:${timestamp}
-docker tag ${image}:${timestamp} $DOCKER_REPO:latest
+docker tag ${env_name}:${timestamp} $DOCKER_REPO:${timestamp}
+docker tag ${env_name}:${timestamp} $DOCKER_REPO:latest
 docker push $DOCKER_REPO:${timestamp}
 docker push $DOCKER_REPO:latest
 {% elif key == "quay" %}
-docker create --name extra-container ${image}:${timestamp}
+docker create --name extra-container ${env_name}:${timestamp}
 echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
 docker commit extra-container quay.io/$QUAY_REPO:${timestamp}
 docker commit extra-container quay.io/$QUAY_REPO:latest
@@ -41,5 +49,5 @@ exit 1
 {% endif %}
 {% endfor %}
 {% if os.getenv("zenodo_upload") == "yes" %}
-python3 zenodo_uploader.py -c {{config_file}}
+python3 zenodo_uploader.py -f {{config_file}}
 {% endif %}
