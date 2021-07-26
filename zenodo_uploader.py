@@ -1,16 +1,18 @@
-import requests
 import os
-os.getenv('ZENODO_ACCESS_TOKEN: ')
-headers = {"Content-Type": "application/json"}
-params = {'access_token': ACCESS_TOKEN}
-r = requests.post('https://sandbox.zenodo.org/api/deposit/depositions', params=params, json={}, headers=headers)
-bucket_url = r.json()["links"]["bucket"]
-filename = input("Enter filename as 'my-file.zip': ")
-path = input("Enter file path as '/path/to/my-file.zip': ")
-print("Hold on. This will take a while...")
-with open(path, "rb") as fp:
-    r = requests.put(
-        "f"(bucket_url, filename),
-        data=fp,
-        params=params
-    )
+from pathlib import Path
+import yaml
+from pyzenodo3.upload import upload
+
+def upload_to_zenodo(config_file="n2sn.yml"):
+    with open(config_file, "r") as fp:
+        yaml_file = yaml.load(fp, Loader=yaml.BaseLoader)
+        upload(
+            datafn=Path(yaml_file.get("zenodo_upload_file_path")),
+            token=os.getenv("ZENODO_ACCESS_TOKEN", ""),
+            base_url="https://sandbox.zenodo.org/api/",
+            metafn=Path(""),
+        )
+
+if __name__ == "__main__":
+    upload_to_zenodo()
+    print("Upload Done!")
