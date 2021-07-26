@@ -48,5 +48,5 @@ exit 1
 {% endif %}
 {% endfor %}
 {% if os.getenv("zenodo_upload") == "yes" %}
-python3 zenodo_uploader.py -f {{config_file}}
+python3 zenodo_uploader.py -f ${env_name}.tar.gz
 {% endif %}
