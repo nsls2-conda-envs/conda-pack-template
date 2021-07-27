@@ -6,7 +6,6 @@ ENV python_version="{{ python_version }}"
 ENV pkg_name="{% if pkg_name %}{{ pkg_name }}={{ pkg_version }}{% endif %}"
 ENV extra_packages="{{ extra_packages }}"
 ENV channels="{{ channels }}"
-ENV OMPI_MCA_opal_cuda_support=true
 
 RUN yum install curl mesa-libGL -y && yum clean all && \
     conda install conda -y && \
