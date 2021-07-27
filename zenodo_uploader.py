@@ -4,13 +4,12 @@ import yaml
 from pyzenodo3.upload import upload
 import argparse
 
-def upload_to_zenodo(file_name_to_upload):
-            upload(
-                datafn=Path(file_name_to_upload),
-                token=os.getenv("ZENODO_ACCESS_TOKEN", ""),
-                base_url="https://sandbox.zenodo.org/api/",
-                metafn=Path(""),
-            )
+def upload_to_zenodo(file_name_to_upload, base_url="https://sandbox.zenodo.org/api/"):
+    upload(
+        datafn=Path(file_name_to_upload),
+        token=os.getenv("ZENODO_ACCESS_TOKEN", ""),
+        metafn=Path(""),
+    )
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
