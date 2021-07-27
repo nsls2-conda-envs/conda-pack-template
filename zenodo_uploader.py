@@ -8,7 +8,7 @@ def upload_to_zenodo(file_name_to_upload, base_url="https://sandbox.zenodo.org/a
     upload(
         datafn=Path(file_name_to_upload),
         token=os.getenv("ZENODO_ACCESS_TOKEN", ""),
-        metafn=Path(""),
+        metafn="",
     )
 
 if __name__ == "__main__":
