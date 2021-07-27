@@ -2,18 +2,17 @@ FROM {{os.getenv("docker_image")}} as build
 
 ENV PATH="opt/conda/bin/:$PATH"
 ENV env_name="{{ env_name }}"
-ENV python_version="{{python_version}}"
-ENV pkg_name="{% if pkg_name %}{{pkg_name}}={{pkg_version}}{% endif %}"
+ENV python_version="{{ python_version }}"
+ENV pkg_name="{% if pkg_name %}{{ pkg_name }}={{ pkg_version }}{% endif %}"
 ENV extra_packages="{{ extra_packages }}"
 ENV channels="{{ channels }}"
 ENV OMPI_MCA_opal_cuda_support=true
 
 RUN yum install curl mesa-libGL -y && yum clean all && \
-    conda config --set allow_conda_downgrades true && \
     conda install conda -y && \
     conda create -n ${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages} && \
     conda init "bash"
 
-RUN bash -lc "conda activate {{env_name}} && conda remove perl --force -y || echo Perl not found"
+RUN bash -lc "conda activate {{ env_name }} && conda remove perl --force -y || echo Perl not found"
 
 COPY export.sh /home/conda/
