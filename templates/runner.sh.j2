@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 sed -e 's/: [^:\/\/]/="/g;s/ *=/=/g' {{config_file}} >temp.yml
 source temp.yml
 rm temp.yml
