@@ -2,12 +2,9 @@
 
 set -e
 
-sed -e 's/: [^:\/\/]/="/g;s/ *=/=/g' {{config_file}} >temp.yml
-source temp.yml
-rm temp.yml
-export docker_upload="dockerhub;ghcr;quay"
-export zenodo_upload=yes
-export zenodo_upload_file_path=${env_name}.tar.gz
+{% for key, value in params.items() %}
+export {{key}}="{{value}}"
+{% endfor %}
 
 if [ -f "${env_name}.tar.gz" ]; then
     echo -e "File ${env_name}.tar.gz exists. Move it or remove it before proceeding."
@@ -20,7 +17,7 @@ docker image build . -t ${env_name}:latest \
                      -t ${env_name}:${timestamp}
 docker run -ti --name temp ${env_name}:${timestamp} bash -l /home/conda/export.sh
 
-{% for key in os.getenv("docker_upload").split(";") %}
+{% for key in docker_upload.split(";") %}
 {% if key == "ghcr" %}
 echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
 docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
