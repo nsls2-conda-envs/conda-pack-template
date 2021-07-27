@@ -19,8 +19,6 @@ timestamp=$(date +%Y%m%d%H%M%S)
 docker image build . -t ${env_name}:latest \
                      -t ${env_name}:${timestamp}
 docker run -ti --name temp ${env_name}:${timestamp} bash -l /home/conda/export.sh
-docker cp temp:/home/conda/. .
-docker rm -f temp
 
 {% for key in os.getenv("docker_upload").split(";") %}
 {% if key == "ghcr" %}
