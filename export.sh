@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -vxeuo pipefail
 
 echo "Environment name: ${env_name}"
 echo "Channels: ${channels}"
