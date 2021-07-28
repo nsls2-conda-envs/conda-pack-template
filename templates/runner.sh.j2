@@ -16,7 +16,15 @@ timestamp=$(date +%Y%m%d%H%M%S)
 docker image build . -t ${env_name}:latest \
                      -t ${env_name}:${timestamp}
 
-docker run -it --rm --name ${env_name} -v $PWD:${build_dir}:rw,z,delegated \
+daemon_mode="${GITHUB_ACTIONS:-false}"
+if [ "${daemon_mode}" == "true" ]; then
+    interactive="-d"
+else
+    interactive="-it"
+fi
+echo "docker run interactive option: ${interactive}"
+
+docker run ${interactive} --rm --name ${env_name} -v $PWD:${build_dir}:rw,z,delegated \
     -e env_name -e channels -e build_dir \
     ${env_name}:${timestamp} bash ${build_dir}/export.sh
 
