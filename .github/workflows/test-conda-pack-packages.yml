@@ -29,29 +29,15 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          conda info
-          conda env list
-          conda list
-          conda config --show-sources
-          conda config --show
-          printenv | sort
-
           python3 -m pip install -r requirements.txt
 
       - name: pip-install dev-dependencies
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          conda info
-          conda env list
-          conda list
-          conda config --show-sources
-          conda config --show
-          printenv | sort
-
           python3 -m pip install -r requirements-dev.txt
 
-      - name: render n2sn config
+      - name: check env
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
@@ -59,10 +45,16 @@ jobs:
           conda info
           conda env list
           conda list
+          pip list
           conda config --show-sources
           conda config --show
           printenv | sort
 
+      - name: render n2sn config
+        shell: bash -l {0}
+        run: |
+          # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
+          set -vxeuo pipefail
           python3 render.py -c configs/n2sn.yml
           ls -la
           cat ./Dockerfile
