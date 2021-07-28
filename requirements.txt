@@ -1,3 +1,4 @@
 conda-pack
 ipython
 jinja2
+pyyaml
