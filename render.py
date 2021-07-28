@@ -25,16 +25,19 @@ if __name__ == "__main__":
         params = yaml.load(f, Loader=yaml.SafeLoader)
         params.setdefault('docker_upload', "dockerhub;ghcr;quay")
         params.setdefault('zenodo_upload', "yes")
-        os.environ.update(params)
 
     script_location = os.path.abspath(os.path.dirname(__file__))
+    templates_dir = os.path.join(script_location, 'templates')
+    if not os.path.isdir(templates_dir):
+        raise FileNotFoundError(f"The directory '{templates_dir}' does not exist.")
+
     print(f"Script location: {script_location}")
 
     # RENDER runner.sh
-    template_file = os.path.join(script_location, "runner.sh.j2")
-    # Get the base name, i.e. 'gen-conda-packed-env.sh':
+    template_file = os.path.join(templates_dir, "runner.sh.j2")
+    # Get the base name, i.e. 'runner.sh':
     name = os.path.splitext(os.path.basename(template_file))[0]
-    # Split the base name into ('gen-conda-packed-env', '.sh'):
+    # Split the base name into ('runner', '.sh'):
     name = os.path.splitext(name)
     script_name = f"{name[0]}-{params['env_name']}{name[1]}"
     params["script_name"] = script_name
@@ -42,14 +45,14 @@ if __name__ == "__main__":
     with open(template_file) as f:
         template = Template(f.read())
 
-    text = template.render(os=os, config_file=args.config_file, **params)
+    text = template.render(params=params, **params)
     print(text)
 
     with open(script_name, "w") as f:
         f.write(text)
 
     # RENDER Dockerfile
-    template_file = os.path.join(script_location, "Dockerfile.j2")
+    template_file = os.path.join(templates_dir, "Dockerfile.j2")
 
     name = os.path.splitext(os.path.basename(template_file))[0]
 
@@ -59,7 +62,7 @@ if __name__ == "__main__":
     with open(template_file) as f:
         template = Template(f.read())
 
-    text = template.render(os=os, **params)
+    text = template.render(**params)
     print(text)
 
     with open(script_name, "w") as f:

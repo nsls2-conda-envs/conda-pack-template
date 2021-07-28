@@ -1,49 +1,52 @@
 #!/bin/bash
 
-set -e
+set -vxeuo pipefail
 
-{% for key, value in params.items() %}
+{% for key, value in params.items() -%}
 export {{key}}="{{value}}"
 {% endfor %}
-
 if [ -f "${env_name}.tar.gz" ]; then
     echo -e "File ${env_name}.tar.gz exists. Move it or remove it before proceeding."
     exit 1
 fi
 
+export build_dir="/build"
 timestamp=$(date +%Y%m%d%H%M%S)
 
 docker image build . -t ${env_name}:latest \
                      -t ${env_name}:${timestamp}
-docker run -ti --name temp ${env_name}:${timestamp} bash -l /home/conda/export.sh
 
-{% for key in docker_upload.split(";") %}
+docker run -it --rm --name ${env_name} -v $PWD:${build_dir}:rw,z,delegated \
+    -e env_name -e channels -e build_dir \
+    ${env_name}:${timestamp} bash ${build_dir}/export.sh
+
+{%- for key in docker_upload.split(";") %}
 {% if key == "ghcr" %}
-echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
-docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
-docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:latest
-docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
-docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:latest
+# echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
+# docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
+# docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:latest
+# docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
+# docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:latest
 {% elif key == "dockerhub" %}
-echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-docker tag ${env_name}:${timestamp} $DOCKER_REPO:${timestamp}
-docker tag ${env_name}:${timestamp} $DOCKER_REPO:latest
-docker push $DOCKER_REPO:${timestamp}
-docker push $DOCKER_REPO:latest
+# echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+# docker tag ${env_name}:${timestamp} $DOCKER_REPO:${timestamp}
+# docker tag ${env_name}:${timestamp} $DOCKER_REPO:latest
+# docker push $DOCKER_REPO:${timestamp}
+# docker push $DOCKER_REPO:latest
 {% elif key == "quay" %}
-docker create --name extra-container ${env_name}:${timestamp}
-echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
-docker commit extra-container quay.io/$QUAY_REPO:${timestamp}
-docker commit extra-container quay.io/$QUAY_REPO:latest
-docker push quay.io/$QUAY_REPO:${timestamp}
-docker push quay.io/$QUAY_REPO:latest
-docker rm extra-container
-docker image rm quay.io/$QUAY_REPO
+# docker create --name extra-container ${env_name}:${timestamp}
+# echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
+# docker commit extra-container quay.io/$QUAY_REPO:${timestamp}
+# docker commit extra-container quay.io/$QUAY_REPO:latest
+# docker push quay.io/$QUAY_REPO:${timestamp}
+# docker push quay.io/$QUAY_REPO:latest
+# docker rm extra-container
+# docker image rm quay.io/$QUAY_REPO
 {% else %}
 echo "Invalid entry."
 exit 1
-{% endif %}
-{% endfor %}
-{% if zenodo_upload == "yes" %}
-python3 zenodo_uploader.py -f ${env_name}.tar.gz
+{% endif -%}
+{% endfor -%}
+{%- if zenodo_upload == "yes" %}
+# python3 zenodo_uploader.py -f ${env_name}.tar.gz
 {% endif %}

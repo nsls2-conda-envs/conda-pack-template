@@ -6,11 +6,17 @@ ENV pkg_name="{% if pkg_name %}{{ pkg_name }}={{ pkg_version }}{% endif %}"
 ENV extra_packages="{{ extra_packages }}"
 ENV channels="{{ channels }}"
 
+# RUN echo "always_yes: true\n\
+# envs_dirs:\n\
+#   - ~/conda_envs\n\
+#   - /opt/conda_envs" >> /home/conda/.condarc
+
 RUN yum install curl mesa-libGL -y && yum clean all && \
     source /opt/conda/etc/profile.d/conda.sh && \
     conda install conda -y && \
-    conda create -n ${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}
+    conda create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}
 
-RUN bash -l -c "conda activate /opt/conda_envs/{{ env_name }} && conda remove perl --force -y || echo 'Perl not found'"
+{%- if extra_cmd_after_install %}{{ '\n' }}
+RUN bash -l -c "conda activate /opt/conda_envs/{{ env_name }} && {{ extra_cmd_after_install }}"{% endif %}
 
-COPY export.sh /home/conda/
+# COPY export.sh /home/conda/
