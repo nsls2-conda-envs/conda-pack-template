@@ -6,7 +6,7 @@ on:
 
 jobs:
   generate_conda_packd_envs:
-    name: Generate conda-pack'd envs with ${{ matrix.python-version }}
+    name: Generate conda-pack'd envs with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,16 +25,44 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: pip-install dependencies
-        run: python3 -m pip install -r requirements.txt
+        shell: bash -l {0}
+        run: |
+          # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
+          set -vxeuo pipefail
+          conda info
+          conda env list
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
+          python3 -m pip install -r requirements.txt
 
       - name: pip-install dev-dependencies
-        run: python3 -m pip install -r requirements-dev.txt
+        run: |
+          # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
+          set -vxeuo pipefail
+          conda info
+          conda env list
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
+          python3 -m pip install -r requirements-dev.txt
 
       - name: render n2sn config
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
+          conda info
+          conda env list
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
           python3 render.py -c configs/n2sn.yml
           ls -la
           cat ./Dockerfile
