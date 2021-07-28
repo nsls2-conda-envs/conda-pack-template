@@ -67,4 +67,5 @@ jobs:
           set -vxeuo pipefail
           bash ./runner-n2sn.sh
           ls -laF
+          sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
