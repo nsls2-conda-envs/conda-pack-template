@@ -22,11 +22,17 @@ if [ "${daemon_mode}" == "true" ]; then
 else
     interactive="-it"
 fi
-echo "docker run interactive option: ${interactive}"
+docker_run_cmd="docker run ${interactive} --rm --name ${env_name} -v $PWD:${build_dir}:rw,z,delegated \
+                    -e env_name -e channels -e build_dir \
+                    ${env_name}:${timestamp} bash ${build_dir}/export.sh"
+echo -e "docker run command:\n\n${docker_run_cmd}\n"
 
-docker run ${interactive} --rm --name ${env_name} -v $PWD:${build_dir}:rw,z,delegated \
-    -e env_name -e channels -e build_dir \
-    ${env_name}:${timestamp} bash ${build_dir}/export.sh
+if [ "${daemon_mode}" == "true" ]; then
+    container_id=$(${docker_run_cmd})
+    docker logs --follow $container_id
+else
+    ${docker_run_cmd}
+fi
 
 {%- for key in docker_upload.split(";") %}
 {% if key == "ghcr" %}
