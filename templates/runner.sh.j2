@@ -11,6 +11,10 @@ if [ -f "${env_name}.tar.gz" ]; then
 fi
 
 export build_dir="/build"
+repo_dir="/repo"
+artifacts_dir="${PWD}/artifacts"
+mkdir -m 0777 -v -p ${artifacts_dir}
+
 timestamp=$(date +%Y%m%d%H%M%S)
 
 docker image build . -t ${env_name}:latest \
@@ -22,9 +26,11 @@ if [ "${daemon_mode}" == "true" ]; then
 else
     interactive="-it"
 fi
-docker_run_cmd="docker run ${interactive} --rm --name ${env_name} -v $PWD:${build_dir}:rw,z,delegated \
+docker_run_cmd="docker run ${interactive} --rm --name ${env_name} \
+                    -v ${artifacts_dir}:${build_dir}:rw,z,delegated \
+                    -v ${PWD}:${repo_dir} \
                     -e env_name -e channels -e build_dir \
-                    ${env_name}:${timestamp} bash ${build_dir}/export.sh"
+                    ${env_name}:${timestamp} bash ${repo_dir}/export.sh"
 echo -e "docker run command:\n\n${docker_run_cmd}\n"
 
 if [ "${daemon_mode}" == "true" ]; then
