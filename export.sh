@@ -2,6 +2,8 @@
 
 set -vxeuo pipefail
 
+ls -laF ${build_dir}
+
 env | sort -u
 
 echo "Environment name: ${env_name}"
