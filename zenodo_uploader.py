@@ -32,7 +32,7 @@ def upload_to_zenodo(
             f"The file, specified for uploading does not exist: {filename}"
         )
 
-    file_url = return_json["links"]["html"]
+    file_url = return_json["links"]["html"].replace('deposit', 'record')
 
     print(f"Uploading {filename} to Zenodo. This may take some time...")
     with open(filename, "rb") as fp:
@@ -42,14 +42,14 @@ def upload_to_zenodo(
         print(f"\nFile Uploaded successfully!\nFile link: {file_url}")
 
     print(f"Uploading metadata for {filename} ...")
-    with open("configs/zenodo_metadata.yml") as fp:
+    with open("configs/n2sn.yml") as fp:
 
         data = yaml.safe_load(fp)
 
         r = requests.put(
             f"{zenodo_server}/{deposition_id}",
             params=params,
-            data=json.dumps(data),
+            data=json.dumps(data["zenodo_metadata"]),
             headers=headers,
         )
         if r.status_code != 200:
