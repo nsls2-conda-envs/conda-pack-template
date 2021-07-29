@@ -4,7 +4,6 @@ import argparse
 import requests
 import traceback
 
-
 def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.org/api/deposit/depositions"):
     headers = {"Content-Type": "application/json"}
     params = {"access_token": os.getenv("ZENODO_ACCESS_TOKEN", "")}
@@ -14,16 +13,21 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
         json={},
         headers=headers,
     )
+    if r.status_code != 200:
+    raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
+
     return_json = r.json()
     deposition_id = return_json["id"]
     bucket_url = return_json["links"]["bucket"]
     filename = os.path.abspath(file_name_to_upload)
     if not os.path.isfile(filename):
         raise FileNotFoundError(f"The file, specified for uploading does not exist: {filename}")
-    file_url = r.json()["links"]["html"]
+    file_url = return_json["links"]["html"]
     with open(filename, "rb") as fp:
         try:
             r = requests.put(f"{bucket_url}/{filename}", data=fp, params=params)
+            if r.status_code != 200:
+                raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
             print(
                 f"\nFile Uploaded successfully!\nFile link: {file_url}"
             )
