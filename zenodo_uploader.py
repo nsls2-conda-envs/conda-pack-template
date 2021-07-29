@@ -7,6 +7,7 @@ import json
 
 def upload_to_zenodo(
     file_name_to_upload,
+    config_file,
     zenodo_server="https://sandbox.zenodo.org/api/deposit/depositions",
 ):
     headers = {"Content-Type": "application/json"}
@@ -42,7 +43,7 @@ def upload_to_zenodo(
         print(f"\nFile Uploaded successfully!\nFile link: {file_url}")
 
     print(f"Uploading metadata for {filename} ...")
-    with open("configs/n2sn.yml") as fp:
+    with open(config_file) as fp:
 
         data = yaml.safe_load(fp)
 
@@ -63,10 +64,11 @@ def upload_to_zenodo(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=("Upload files to Zenodo."))
     parser.add_argument(
-        "-f",
-        "--file",
-        dest="file_name_to_upload",
-        help="path to the file to be uploaded",
+        "-f", "--file", dest="file_name_to_upload", help="path to the file to be uploaded",
     )
+    parser.add_argument(
+        "-c", "--config-file", dest="config_file", help="input the config file"
+    )
+    
     args = parser.parse_args()
-    upload_to_zenodo(args.file_name_to_upload)
+    upload_to_zenodo(args.file_name_to_upload, args.config_file)
