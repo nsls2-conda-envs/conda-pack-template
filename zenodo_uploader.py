@@ -17,7 +17,9 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
     return_json = r.json()
     deposition_id = return_json["id"]
     bucket_url = return_json["links"]["bucket"]
-    filename = file_name_to_upload
+    filename = os.path.abspath(file_name_to_upload)
+    if not os.path.isfile(filename):
+        raise FileNotFoundError(f"The file, specified for uploading does not exist: {filename}")
     file_url = r.json()["links"]["html"]
     with open(filename, "rb") as fp:
         try:
