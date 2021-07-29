@@ -13,7 +13,7 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
         json={},
         headers=headers,
     )
-    if r.status_code != 200:
+    if r.status_code != 201:
         raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
 
     return_json = r.json()
