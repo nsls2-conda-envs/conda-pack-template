@@ -37,7 +37,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=("Upload files to Zenodo."))
 
     parser.add_argument(
-        "-f", "--file", dest="file_name_to_upload", help="the input config file"
+        "-f", "--file", dest="file_name_to_upload", help="path to the file to be uploaded"
     )
     args = parser.parse_args()
     upload_to_zenodo(args.file_name_to_upload)
