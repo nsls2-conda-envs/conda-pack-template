@@ -19,12 +19,12 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
     #print(r.json())
     bucket_url = r.json()["links"]["bucket"]
     filename = file_name_to_upload
-    print("\nHold on. This will take a while...")
+    file_url = r.json()["links"]["html"]
     with open(filename, "rb") as fp:
         try:
             r = requests.put(f"{bucket_url}/{filename}", data=fp, params=params)
             print(
-                f"\nFile Uploaded successfully!\nFile link: {r.json()['links']['self']}"
+                f"\nFile Uploaded successfully!\nFile link: {file_url}"
             )
             print(r.status_code)
             print(r.json())
