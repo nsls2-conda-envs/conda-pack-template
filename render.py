@@ -25,6 +25,7 @@ if __name__ == "__main__":
         params = yaml.load(f, Loader=yaml.SafeLoader)
         params.setdefault('docker_upload', "dockerhub;ghcr;quay")
         params.setdefault('zenodo_upload', "yes")
+        params.pop('zenodo_metadata')
 
     script_location = os.path.abspath(os.path.dirname(__file__))
     templates_dir = os.path.join(script_location, 'templates')
