@@ -20,14 +20,15 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
     return_json = r.json()
     deposition_id = return_json["id"]
     bucket_url = return_json["links"]["bucket"]
-    filename = os.path.basename(file_name_to_upload)
+    filename = os.path.abspath(file_name_to_upload)
+    filebase = os.path.basename(file_name_to_upload)
     if not os.path.isfile(filename):
         raise FileNotFoundError(f"The file, specified for uploading does not exist: {filename}")
     file_url = return_json["links"]["html"]
     print(f"Uploading {file_name_to_upload} to Zenodo. This may take some time...")
     with open(filename, "rb") as fp:
         try:
-            r = requests.put(f"{bucket_url}/{filename}", data=fp, params=params)
+            r = requests.put(f"{bucket_url}/{filebase}", data=fp, params=params)
             if r.status_code != 200:
                 raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
             print(
