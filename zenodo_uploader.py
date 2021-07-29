@@ -31,7 +31,7 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
             if r.status_code != 200:
                 raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
             print(
-                f"\nFile Uploaded successfully!\nFile link: {file_url}"
+                f"\nFile Uploaded successfully!\nFile link: {file_url}
             )
         except Exception as excinfo:
             print(
