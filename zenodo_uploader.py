@@ -16,8 +16,6 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
     )
     return_json = r.json()
     deposition_id = return_json["id"]
-    #print(r.status_code)
-    #print(r.json())
     bucket_url = r.json()["links"]["bucket"]
     filename = file_name_to_upload
     file_url = r.json()["links"]["html"]
