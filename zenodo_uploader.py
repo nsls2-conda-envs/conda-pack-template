@@ -34,14 +34,14 @@ def upload_to_zenodo(
 
     file_url = return_json["links"]["html"]
 
-    print(f"Uploading {file_name_to_upload} to Zenodo. This may take some time...")
+    print(f"Uploading {filename} to Zenodo. This may take some time...")
     with open(filename, "rb") as fp:
         r = requests.put(f"{bucket_url}/{filebase}", data=fp, params=params)
         if r.status_code != 200:
             raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
         print(f"\nFile Uploaded successfully!\nFile link: {file_url}")
 
-    print(f"Uploading {file_name_to_upload} metadata...")
+    print(f"Uploading metadata for {filename} ...")
     with open("configs/zenodo_metadata.yml") as fp:
 
         data = yaml.safe_load(fp)
@@ -55,7 +55,7 @@ def upload_to_zenodo(
         if r.status_code != 200:
             raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
 
-    print(f"Publishing {file_name_to_upload}...")
+    print(f"Publishing {filebase}...")
     r = requests.post(f"{zenodo_server}/{deposition_id}/actions/publish", params=params)
     if r.status_code != 202:
         raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
