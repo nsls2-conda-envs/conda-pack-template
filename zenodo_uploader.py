@@ -27,8 +27,6 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
             print(
                 f"\nFile Uploaded successfully!\nFile link: {file_url}"
             )
-            print(r.status_code)
-            print(r.json())
         except Exception as excinfo:
             print(
                 f"\nFailed to upload file! Here is why:\n{''.join(traceback.format_exception(None, excinfo, excinfo.__traceback__))}"
