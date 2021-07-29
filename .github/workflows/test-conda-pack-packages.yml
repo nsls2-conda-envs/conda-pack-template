@@ -14,12 +14,18 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Set env.REPOSITORY_NAME  # just the repo, as opposed to org/repo
+        shell: bash -l {0}
+        run: |
+          export REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}
+          echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_ENV
+
       - name: checkout the code
         uses: actions/checkout@v2
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          activate-environment: "conda-pack"
+          activate-environment: ${{ env.REPOSITORY_NAME }}
           auto-update-conda: true
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
