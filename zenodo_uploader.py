@@ -32,9 +32,6 @@ def upload_to_zenodo(file_name_to_upload, zenodo_server="https://sandbox.zenodo.
                 f"\nFailed to upload file! Here is why:\n{''.join(traceback.format_exception(None, excinfo, excinfo.__traceback__))}"
             )
     r = requests.post(f"{zenodo_server}/{deposition_id}/actions/publish", params=params)
-    #print(r.status_code)
-    #print(r.json())
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=("Upload files to Zenodo."))
