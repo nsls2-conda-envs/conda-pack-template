@@ -40,7 +40,7 @@ else
     ${docker_run_cmd}
 fi
 
-{%- for key in docker_upload.split(";") %}
+{%- for key in docker_upload %}
 {% if key == "ghcr" %}
 # echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
 # docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
@@ -68,5 +68,5 @@ exit 1
 {% endif -%}
 {% endfor -%}
 {%- if zenodo_upload == "yes" %}
-# python3 zenodo_uploader.py -f ${env_name}.tar.gz
+python3 zenodo_uploader.py -f ${artifacts_dir}/${env_name}.tar.gz -c configs/${env_name}.yml
 {% endif %}
