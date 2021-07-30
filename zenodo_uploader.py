@@ -10,6 +10,18 @@ def upload_to_zenodo(
     config_file,
     zenodo_server="https://sandbox.zenodo.org/api/deposit/depositions",
 ):
+    filename = os.path.abspath(file_name_to_upload)
+    if not os.path.isfile(filename):
+        raise FileNotFoundError(
+            f"The file, specified for uploading does not exist: {filename}"
+        )
+        
+    config_name = os.path.abspath(config_file)
+    if not os.path.isfile(config_name):
+        raise FileNotFoundError(
+            f"The file, specified for uploading does not exist: {config_name}"
+        )
+        
     headers = {"Content-Type": "application/json"}
     params = {"access_token": os.getenv("ZENODO_ACCESS_TOKEN", "")}
     r = requests.post(
@@ -25,7 +37,6 @@ def upload_to_zenodo(
     deposition_id = return_json["id"]
     bucket_url = return_json["links"]["bucket"]
 
-    filename = os.path.abspath(file_name_to_upload)
     filebase = os.path.basename(file_name_to_upload)
 
     if not os.path.isfile(filename):
