@@ -5,7 +5,7 @@ pkg_name: "n2snusertools"
 pkg_version: "0.3.6"
 extra_packages: ""
 channels: "-c nsls2forge -c defaults"
-docker_upload: "ghcr"
+docker_upload: "ghcr; dockerhub; quay"
 zenodo_metadata:
   metadata:
     title: "User tools for the NSLS-II Science Network"
