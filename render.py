@@ -23,8 +23,9 @@ if __name__ == "__main__":
 
     with open(config_file) as f:
         params = yaml.load(f, Loader=yaml.SafeLoader)
-        params.setdefault('docker_upload', "dockerhub;ghcr;quay")
-        params.setdefault('zenodo_upload', "yes")
+    params.setdefault('docker_upload', "dockerhub;ghcr;quay")
+    params.setdefault('zenodo_upload', "yes")
+    params.pop('zenodo_metadata')  # removing the parameters that are not needed for rendering
 
     script_location = os.path.abspath(os.path.dirname(__file__))
     templates_dir = os.path.join(script_location, 'templates')
