@@ -40,7 +40,7 @@ else
     ${docker_run_cmd}
 fi
 
-{%- for key in docker_upload.split(";") %}
+{%- for key in docker_upload %}
 {% if key == "ghcr" %}
 # echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
 # docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
