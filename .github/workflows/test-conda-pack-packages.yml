@@ -20,6 +20,12 @@ jobs:
           export REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}
           echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_ENV
 
+      - name: Set secrets
+        shell: bash -l {0}
+        run: |
+          export ZENODO_ACCESS_TOKEN=${{ secrets.ZENODO_ACCESS_TOKEN }}
+          echo "ZENODO_ACCESS_TOKEN=${ZENODO_ACCESS_TOKEN}" >> $GITHUB_ENV
+
       - name: checkout the code
         uses: actions/checkout@v2
 
