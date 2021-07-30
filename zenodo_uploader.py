@@ -19,7 +19,7 @@ def upload_to_zenodo(
     config_name = os.path.abspath(config_file)
     if not os.path.isfile(config_name):
         raise FileNotFoundError(
-            f"The file, specified for uploading does not exist: {config_name}"
+            f"The file with metadata, specified for uploading does not exist: {config_name}"
         )
         
     headers = {"Content-Type": "application/json"}
@@ -38,11 +38,6 @@ def upload_to_zenodo(
     bucket_url = return_json["links"]["bucket"]
 
     filebase = os.path.basename(file_name_to_upload)
-
-    if not os.path.isfile(filename):
-        raise FileNotFoundError(
-            f"The file, specified for uploading does not exist: {filename}"
-        )
 
     file_url = return_json["links"]["html"].replace('deposit', 'record')
 
