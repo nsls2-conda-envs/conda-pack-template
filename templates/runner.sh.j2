@@ -68,5 +68,5 @@ exit 1
 {% endif -%}
 {% endfor -%}
 {%- if zenodo_upload == "yes" %}
-python3 zenodo_uploader.py -f ${env_name}.tar.gz -c configs/${env_name}.yml
+python3 zenodo_uploader.py -f ${artifacts_dir}/${env_name}.tar.gz -c configs/${env_name}.yml
 {% endif %}
