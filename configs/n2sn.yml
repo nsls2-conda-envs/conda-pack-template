@@ -11,6 +11,7 @@ zenodo_metadata:
     title: "User tools for the NSLS-II Science Network"
     upload_type: "software"
     description: "User tools for the NSLS-II Science Network. https://github.com/NSLS-II/N2SNUserTools"
+    version: 0.0.1
     creators:
       - name: Gedell, John
         affiliation: "St. Joseph's College"
