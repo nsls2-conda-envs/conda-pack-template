@@ -61,13 +61,14 @@ def upload_to_zenodo(
     if r.status_code != 202:
         raise RuntimeError(f"The status code for the request is {r.status_code}.\nMessage: {r.text}")
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=("Upload files to Zenodo."))
     parser.add_argument(
         "-f", "--file", dest="file_name_to_upload", help="path to the file to be uploaded",
     )
     parser.add_argument(
-        "-c", "--config-file", dest="config_file", help="input the config file"
+        "-c", "--config-file", dest="config_file", help="config file with metadata information"
     )
     
     args = parser.parse_args()
