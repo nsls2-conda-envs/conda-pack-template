@@ -6,27 +6,33 @@ import requests
 import yaml
 import json
 from urllib.parse import urlencode
+import traceback
+
 
 
 def search_for_deposition(
     title,
     owner=None,
-    creators=None,
     zenodo_server="https://sandbox.zenodo.org/api/",
 ):
     print(f"Searching for depositions...\n")
     search = f'metadata.title:"{title}"'
     if owner:
         search += f" owners:{owner}"
-    if creators:
-        creators_query = '"' + '" OR "'.join(creators) + '"'
-        search += f" metadata.creators.name:{creators_query}"
+
     search = search.replace("/", " ")  # zenodo can't handle '/' in search query
 
     params = {"q": search, "sort": "bestmatch"}
     url = zenodo_server + "records?" + urlencode(params)
 
-    records = [hit for hit in requests.get(url).json()["hits"]["hits"]]
+    try:
+        response = requests.get(url).json()
+        records = [hit for hit in response["hits"]["hits"]]
+    except Exception as excinfo:
+        print("No title matches found! here is What happened:\n"
+        )
+        traceback.format_exc()
+        return None, None, None
 
     if not records:
         print(f"No records found for search: '{title}'")
@@ -41,6 +47,7 @@ def search_for_deposition(
         deposition["links"]["bucket"],
         deposition["links"]["html"].replace("deposit", "record"),
     )
+
 
 def create_new_version(
     deposition_id, token, zenodo_server="https://sandbox.zenodo.org/api/"
@@ -69,6 +76,7 @@ def create_new_version(
         deposition["links"]["html"].replace("deposit", "record"),
     )
 
+
 def create_new_deposition(token, zenodo_server="https://sandbox.zenodo.org/api/"):
     url = f"{zenodo_server}deposit/depositions"
     r = requests.post(
@@ -87,6 +95,7 @@ def create_new_deposition(token, zenodo_server="https://sandbox.zenodo.org/api/"
         deposition["links"]["html"].replace("deposit", "record"),
     )
 
+
 def upload_to_zenodo(
     filename,
     bucket_url,
@@ -94,6 +103,7 @@ def upload_to_zenodo(
     filebase,
     token,
 ):
+
     print(f"Uploading {filename} to Zenodo. This may take some time...")
     with open(filename, "rb") as fp:
         r = requests.put(
@@ -103,6 +113,7 @@ def upload_to_zenodo(
 
         print(f"\nFile Uploaded successfully!\nFile link: {file_url}")
 
+
 def add_meta_data(
     deposition_id,
     meta_data,
@@ -110,13 +121,16 @@ def add_meta_data(
     zenodo_server="https://sandbox.zenodo.org/api/",
 ):
     print(f"Uploading metadata for {filename} ...")
+
     r = requests.put(
         f"{zenodo_server}deposit/depositions/{deposition_id}",
         params={"access_token": token},
         data=json.dumps(meta_data),
         headers={"Content-Type": "application/json"},
     )
+
     r.raise_for_status()
+
 
 def publish_file(
     deposition_id,
@@ -126,11 +140,12 @@ def publish_file(
 ):
     print(f"Publishing {filebase}...")
     r = requests.post(
-        f"{zenodo_server}/{deposition_id}/actions/publish",
+        f"{zenodo_server}deposit/depositions/{deposition_id}/actions/publish",
         params={"access_token": token},
     )
 
     r.raise_for_status()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=("Upload files to Zenodo."))
@@ -165,6 +180,7 @@ if __name__ == "__main__":
             "Please create an environment variable with the token.\n"
             "Variable Name: `ZENODO_ACCESS_TOKEN`"
         )
+
     config_file = os.path.abspath(args.config_file)
     if not os.path.isfile(config_file):
         raise FileNotFoundError(
@@ -178,21 +194,24 @@ if __name__ == "__main__":
         except:
             exit(f"Please add metadata to the config file: {config_file}")
 
-    for file in args.files_to_upload:
-        filename = os.path.abspath(file)
-        filebase = os.path.basename(filename)
-        if not os.path.isfile(filename):
-            raise FileNotFoundError(
-                f"The file, specified for uploading does not exist or is a directory: {filename}"
-            )
 
-        deposition_id, bucket_url, file_url = search_for_deposition(
-            title=meta_data["metadata"]["title"],
-            creators=(creator["name"] for creator in meta_data["metadata"]["creators"]),
-        )
+    deposition_id, bucket_url, file_url = search_for_deposition(
+        title=meta_data["metadata"]["title"],
+        owner=os.getenv("ZENODO_OWNER"),
+    )
 
-        if not deposition_id:
-            deposition_id, bucket_url, file_url = create_new_deposition(token=token)
+    if not deposition_id:
+        deposition_id, bucket_url, file_url = create_new_deposition(token=token)
+
+        for file in args.files_to_upload:
+            filename = os.path.abspath(file)
+            filebase = os.path.basename(filename)
+            if not os.path.isfile(filename):
+                raise FileNotFoundError(
+                    f"The file, specified for uploading does not exist or is a directory: {filename}"
+                )
+
+
             upload_to_zenodo(
                 filename=file,
                 bucket_url=bucket_url,
@@ -206,11 +225,20 @@ if __name__ == "__main__":
                 token=token,
             )
 
-            if args.publish:
-                publish_file(
-                    deposition_id=deposition_id, filebase=filebase, token=token
+        if args.publish:
+            publish_file(
+                deposition_id=deposition_id, filebase=filebase, token=token
+            )
+    else:
+
+        for file in args.files_to_upload:
+            filename = os.path.abspath(file)
+            filebase = os.path.basename(filename)
+            if not os.path.isfile(filename):
+                raise FileNotFoundError(
+                    f"The file, specified for uploading does not exist or is a directory: {filename}"
                 )
-        else:
+
             deposition_id, bucket_url, file_url = create_new_version(
                 deposition_id=deposition_id,
                 token=token,
@@ -222,7 +250,7 @@ if __name__ == "__main__":
                 filebase=filebase,
                 token=token,
             )
-            if args.publish:
-                publish_file(
-                    deposition_id=deposition_id, filebase=filebase, token=token
-                )
+        if args.publish:
+            publish_file(
+                deposition_id=deposition_id, filebase=filebase, token=token
+            )
