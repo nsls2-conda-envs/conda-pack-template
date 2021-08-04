@@ -23,7 +23,7 @@ def search_for_deposition(
     search = search.replace("/", " ")  # zenodo can't handle '/' in search query
 
     params = {"q": search, "sort": "bestmatch"}
-    url = zenodo_server + "records?" + urlencode(params)
+    url = f"{zenodo_server}records?{urlencode(params)}"
 
     try:
         response = requests.get(url).json()
