@@ -257,7 +257,7 @@ if __name__ == "__main__":
     if not owner:
         exit(
             "No owner ID provided!\n"
-            "Please create an environment variable with the token.\n"
+            "Please create an environment variable with the owner ID.\n"
             "Variable Name: `ZENODO_OWNER_ID`"
         )
 
