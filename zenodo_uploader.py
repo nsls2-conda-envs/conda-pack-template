@@ -17,6 +17,7 @@ def search_for_deposition(
     title,
     owner=None,
     zenodo_server="https://sandbox.zenodo.org/api/",
+    token=None,
 ):
     print(
         f"Searching for depositions with title='{title}' and "
@@ -31,20 +32,34 @@ def search_for_deposition(
 
     params = {"q": search, "sort": "mostrecent"}
     url = f"{zenodo_server}deposit/depositions?{urlencode(params)}"
+    print(f"Search URL: {url}\n")
 
     try:
-        response = requests.get(url).json()
-        records = [hit for hit in response["hits"]["hits"]]
+        response = requests.get(
+            url,
+            params={"access_token": token},
+        )
+        response_json = response.json()
+        if response.status_code != 200:
+            raise RuntimeError(
+                f"Connection to '{url}' finished with status code "
+                f"{response.status_code}.\n\n"
+                f"Error: {response_json['message']}\n"
+            )
+
+        records = [hit for hit in response_json]
     except Exception:
-        print("No title matches found! here is what happened:\n{}")
-        traceback.format_exc()
+        print(
+            f"No title matches found! here is what happened:\n"
+            f"{traceback.format_exc()}"
+        )
         return None, None, None
 
     if not records:
         print(f"No records found for search: '{title}'")
         return None, None, None
 
-    print(f"Found `{len(records)}` depositions!")
+    print(f"Found ***{len(records)}*** depositions!")
 
     depositions = []
     for deposition in records:
@@ -244,8 +259,8 @@ if __name__ == "__main__":
             "No owner ID provided!\n"
             "Please create an environment variable with the token.\n"
             "Variable Name: `ZENODO_OWNER_ID`"
-       )
-        
+        )
+
     config_file = os.path.abspath(args.config_file)
     if not os.path.isfile(config_file):
         raise FileNotFoundError(
@@ -264,6 +279,7 @@ if __name__ == "__main__":
     deposition_id, bucket_url, file_url = search_for_deposition(
         title=meta_data["metadata"]["title"],
         owner=owner,
+        token=token,
     )
 
     if not deposition_id:
