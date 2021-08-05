@@ -1,0 +1,125 @@
+name: nsls2-collection-2021-2.0
+channels:
+  - conda-forge
+  # - nsls2forge
+dependencies:
+  - python =3.7
+  - amostra <=1.0
+  - ansiwrap
+  - area-detector-handlers
+  - arvpyf
+  - attrs >=18.0
+  - black
+  - bluesky >=1.6.7
+  - bluesky-kafka  # [not win]
+  - bluesky-live
+  - boto3
+  - chxtools
+  - conda-pack
+  - csxtools
+  - dask  # =2021.4.0
+  - databroker >=1.2.0
+  - databroker-pack
+  - distributed  # =2021.4.0
+  - doi2bib
+  # - edrixs
+  - eiger-io
+  - event-model >=1.17.0
+  - fabio
+  - ffmpeg >=4.0
+  - flake8
+  - globus-sdk
+  - graphviz
+  - grid-strategy
+  - h5py >=2.9.0
+  - hdf5-external-filter-plugins-bitshuffle
+  - hdf5-external-filter-plugins-lz4
+  - hxntools >=0.5
+  - igor
+  - inflection
+  # - intel-openmp =2019.4
+  - ipykernel
+  - ipympl >=0.1.1
+  - ipython >=7.20.0
+  - ipywidgets >=7.2.1
+  - isort
+  - ispyb
+  - isstools
+  - jedi
+  - jupyter
+  - jupyterlab
+  - legacy-suitcase
+  - line_profiler
+  - lixtools
+  - lmfit
+  - lxml
+  - matplotlib >=3.1.0,!=3.3.*
+  - memory_profiler
+  - mendeleev
+  # - mkl =2019.4
+  - modestimage
+  - napari >=0.3.7
+  - natsort
+  - netcdf4
+  - nexpy >=0.12.7
+  - nodejs
+  - nsls2-detector-handlers >=0.0.2
+  - nslsii >=0.1.1
+  - numexpr
+  - numpy >=1.14.0
+  - oct2py
+  - opencv
+  - openpyxl
+  - ophyd >=1.6.0
+  - oscars
+  - papermill
+  - pdfstream
+  - peakutils
+  - periodictable
+  - photutils
+  - pillow
+  # - pocl  # may be needed by pyopencl
+  - py4xs
+  - pycentroids  # [not win]
+  - pyepics >=3.4.2
+  - pyfai
+  - pyfftw
+  - pymongo >=3.7
+  - pypdf2
+  - pyqt >=5.9.0
+  - pyqtgraph
+  - pystackreg
+  - python
+  - python-graphviz
+  - pyxrf >=1.0.5
+  - pyzbar  # [not win]
+  - qt >=5.9.0
+  - redis-py
+  - reportlab
+  - requests
+  - sasview
+  - scikit-beam >=0.0.23
+  - scikit-learn
+  - scipy
+  - sixtools
+  - slackclient
+  - srwpy
+  - suitcase-csv
+  - suitcase-json-metadata
+  - suitcase-jsonl
+  - suitcase-mongo  # >=0.3.0 # remove the pin until https://github.com/conda-forge/suitcase-mongo-feedstock/pull/5 is merged
+  - suitcase-msgpack
+  - suitcase-specfile
+  - suitcase-tiff
+  - suitcase-utils
+  - sympy
+  - toml
+  - tomopy
+  - tornado
+  - tqdm
+  - tzlocal >=1.5
+  - xlrd
+  - xlwt
+  - xpdan
+  - xray-vision
+
