@@ -21,7 +21,7 @@ def search_for_deposition(
     search = search.replace("/", " ")  # zenodo can't handle '/' in search query
 
     params = {"q": search, "sort": "mostrecent"}
-    url = zenodo_server + "deposit/depositions?" + urlencode(params)
+    url = f"{zenodo_server}deposit/depositions?{urlencode(params)}"
 
     try:
         response = requests.get(url).json()
@@ -52,7 +52,9 @@ def search_for_deposition(
         reverse=True,
     )[0]
 
-    print(f"Best match is deposition: {deposition['id']}")
+    print(f"Best match is deposition: {deposition['id']}\n"
+          f"Title: {deposition['metadata']['title']}\n"
+          f"Publication date: {deposition['metadata']['publication_date']}\n")
     return (
         deposition["id"],
         deposition["links"]["bucket"],
@@ -124,7 +126,7 @@ def upload_to_zenodo(
 
         print(f"Comparing {filename} checksum with files on zenodo...")
         files_checksums = [file["checksum"] for file in response.json()["files"]]
-        with open(f"{env_name}-md5sum.txt", "r") as fp:
+        with open(f"{os.path.dirname(filename)}/{env_name}-md5sum.txt", "r") as fp:
             content = fp.read()
             current_file_checksum = content.split("=")[-1].strip()
 
