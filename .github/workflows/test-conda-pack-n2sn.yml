@@ -90,3 +90,4 @@ jobs:
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
+          cat artifacts/*-sha256sum.txt artifacts/*-md5sum.txt
