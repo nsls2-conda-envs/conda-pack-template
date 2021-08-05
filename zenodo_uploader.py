@@ -238,7 +238,14 @@ if __name__ == "__main__":
             "Please create an environment variable with the token.\n"
             "Variable Name: `ZENODO_ACCESS_TOKEN`"
         )
-
+    owner = os.getenv("ZENODO_OWNER_ID")
+    if not owner:
+        exit(
+            "No owner ID provided!\n"
+            "Please create an environment variable with the token.\n"
+            "Variable Name: `ZENODO_OWNER_ID`"
+       )
+        
     config_file = os.path.abspath(args.config_file)
     if not os.path.isfile(config_file):
         raise FileNotFoundError(
@@ -256,7 +263,7 @@ if __name__ == "__main__":
 
     deposition_id, bucket_url, file_url = search_for_deposition(
         title=meta_data["metadata"]["title"],
-        owner=int(os.getenv("ZENODO_OWNER_ID")),
+        owner=owner,
     )
 
     if not deposition_id:
