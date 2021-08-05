@@ -26,6 +26,15 @@ jobs:
           export ZENODO_ACCESS_TOKEN=${{ secrets.ZENODO_ACCESS_TOKEN }}
           echo "ZENODO_ACCESS_TOKEN=${ZENODO_ACCESS_TOKEN}" >> $GITHUB_ENV
 
+      - name: Set non-secret environment variables
+        shell: bash -l {0}
+        run: |
+          # ZENODO_OWNER_ID is an integer number corresponding to the sandbox
+          # account with the token above, that is used to upload files, and to
+          # search by the owner id.
+          export ZENODO_OWNER_ID="40261"  # mrakitin's owner id on sandbox.zenodo.org
+          echo "ZENODO_OWNER_ID=${ZENODO_OWNER_ID}" >> $GITHUB_ENV
+
       - name: checkout the code
         uses: actions/checkout@v2
 
