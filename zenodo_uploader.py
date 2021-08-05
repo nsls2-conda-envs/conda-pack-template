@@ -128,7 +128,6 @@ def upload_to_zenodo(
             content = fp.read()
             current_file_checksum = content.split("=")[-1].strip()
 
-
         if current_file_checksum in files_checksums:
             print(f"File: {filename} is already uploaded!\n")
             return
@@ -223,7 +222,7 @@ if __name__ == "__main__":
 
     deposition_id, bucket_url, file_url = search_for_deposition(
         title=meta_data["metadata"]["title"],
-        owner=int(os.getenv("ZENODO_OWNER")),
+        owner=int(os.getenv("ZENODO_OWNER_ID")),
     )
 
     if not deposition_id:
