@@ -5,8 +5,12 @@ import os
 import requests
 import yaml
 import json
-from urllib.parse import urlencode
+import os
 import traceback
+from urllib.parse import urlencode
+
+import requests
+import yaml
 
 
 def search_for_deposition(
