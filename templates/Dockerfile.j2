@@ -11,7 +11,7 @@ ENV channels="{{ channels }}"
 #   - ~/conda_envs\n\
 #   - /opt/conda_envs" >> /home/conda/.condarc
 
-RUN yum install curl mesa-libGL -y && yum clean all && \
+RUN {% if extra_cmd_before_install %}{{ extra_cmd_before_install }} && yum clean all && \{{ '\n    ' }}{% endif -%}
     source /opt/conda/etc/profile.d/conda.sh && \
     conda install conda -y && \
     conda create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}
