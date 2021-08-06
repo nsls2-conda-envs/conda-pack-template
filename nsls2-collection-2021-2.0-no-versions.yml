@@ -1,9 +1,13 @@
 name: nsls2-collection-2021-2.0
 channels:
   - conda-forge
-  # - nsls2forge
 dependencies:
-  - python =3.7
+  #***************************************************************************#
+  #                                                                           #
+  #            Dependencies from the `nsls2-analysis` metapackage             #
+  #                                                                           #
+  #***************************************************************************#
+  - python ==3.7
   - amostra <=1.0
   - ansiwrap
   - area-detector-handlers
@@ -17,10 +21,13 @@ dependencies:
   - chxtools
   - conda-pack
   - csxtools
-  - dask  # =2021.4.0
+  # TODO: check that the latest 'distributed' package works with the latest
+  # 'dask' package. Currently we are pinning the both libraries to have the
+  # same version.
+  - dask  # ={{ dask_pin }}
   - databroker >=1.2.0
   - databroker-pack
-  - distributed  # =2021.4.0
+  - distributed  # ={{ dask_pin }}
   - doi2bib
   # - edrixs
   - eiger-io
@@ -37,7 +44,7 @@ dependencies:
   - hxntools >=0.5
   - igor
   - inflection
-  # - intel-openmp =2019.4
+  # - intel-openmp ={{ mkl_pin }}
   - ipykernel
   - ipympl >=0.1.1
   - ipython >=7.20.0
@@ -53,10 +60,10 @@ dependencies:
   - lixtools
   - lmfit
   - lxml
-  - matplotlib >=3.1.0,!=3.3.*
+  - matplotlib >=3.1.0,!=3.3
   - memory_profiler
   - mendeleev
-  # - mkl =2019.4
+  # - mkl ={{ mkl_pin }}
   - modestimage
   - napari >=0.3.7
   - natsort
@@ -71,14 +78,13 @@ dependencies:
   - opencv
   - openpyxl
   - ophyd >=1.6.0
-  - oscars
   - papermill
   - pdfstream
   - peakutils
   - periodictable
   - photutils
   - pillow
-  # - pocl  # may be needed by pyopencl
+  - pocl  # needed by pyopencl, used by the `xrt` package
   - py4xs
   - pycentroids  # [not win]
   - pyepics >=3.4.2
@@ -103,7 +109,6 @@ dependencies:
   - scipy
   - sixtools
   - slackclient
-  - srwpy
   - suitcase-csv
   - suitcase-json-metadata
   - suitcase-jsonl
@@ -122,4 +127,39 @@ dependencies:
   - xlwt
   - xpdan
   - xray-vision
-
+  # - xraylarch  # commented out as https://github.com/conda-forge/staged-recipes/pull/15706 is not merged yet
+  # Simulation packages:
+  - oscars
+  - shadow3
+  - srwpy
+  - xrt
+  #***************************************************************************#
+  #                                                                           #
+  #            Dependencies from the `nsls2-collection` metapackage           #
+  #                                                                           #
+  #***************************************************************************#
+  - bloptools
+  - bluesky-darkframes
+  - caproto
+  - happi
+  - nslsii >=0.1.3
+  - pexpect
+  - pydm
+  - pyepics >=3.4.2
+  - pyolog >=4.4.0
+  - pyserial
+  - python-confluent-kafka  # [not win]
+  - redis-py
+  - simple-pid
+  - slack-sdk
+  # Beamline-specific packages
+  - hklpy  # [linux]
+  - hxnfly
+  - ppmac
+  - xpdacq
+  # Debugging tools:
+  - hunter
+  - logging_tree
+  # Profiling tools:
+  - line_profiler
+  - pyinstrument
