@@ -7,7 +7,7 @@ dependencies:
   #            Dependencies from the `nsls2-analysis` metapackage             #
   #                                                                           #
   #***************************************************************************#
-  - python ==3.7
+  - python >=3.7,<3.8
   - amostra <=1.0
   - ansiwrap
   - area-detector-handlers
@@ -144,7 +144,7 @@ dependencies:
   - happi
   - nslsii >=0.1.3
   - pexpect
-  - pydm
+  # - pydm
   - pyepics >=3.4.2
   - pyolog >=4.4.0
   - pyserial

@@ -1,11 +1,14 @@
 docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
 env_name: "nsls2-collection-2021-2.0"
+conda_env_file: "nsls2-collection-2021-2.0-env.yml"
 python_version: "3.7"
 pkg_name: ""
 pkg_version: ""
-extra_packages: "nsls2-collection=2021C2.0=*_0 tmate mamba"
+# extra_packages: "nsls2-collection=2021C2.0=*_0 tmate mamba"
+extra_packages: "tmate mamba"
 channels: "-c conda-forge"
-extra_cmd_before_install: "yum install mesa-libGL mesa-libGL-devel -y"
+#extra_cmd_before_install: "yum install mesa-libGL mesa-libGL-devel -y"
+extra_cmd_before_install: "yum install mesa-libGL -y"
 extra_cmd_after_install: "conda remove perl --force -y"
 docker_upload:
   - ghcr

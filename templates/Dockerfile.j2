@@ -5,6 +5,7 @@ ENV python_version="{{ python_version }}"
 ENV pkg_name="{% if pkg_name %}{{ pkg_name }}={{ pkg_version }}{% endif %}"
 ENV extra_packages="{{ extra_packages }}"
 ENV channels="{{ channels }}"
+ENV conda_env_file="{{ conda_env_file }}"
 
 # RUN echo "always_yes: true\n\
 # envs_dirs:\n\
@@ -13,8 +14,12 @@ ENV channels="{{ channels }}"
 
 RUN {% if extra_cmd_before_install %}{{ extra_cmd_before_install }} && yum clean all && \{{ '\n    ' }}{% endif -%}
     source /opt/conda/etc/profile.d/conda.sh && \
-    conda install conda -y && \
-    conda create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}
+    conda install -y ${channels} conda mamba && \
+    mamba env create \
+        --file=configs/${conda_env_file} \
+        -p /opt/conda_envs/${env_name}
+        # ${channels} --override-channels -y \
+        # python=${python_version} conda-pack ${pkg_name} ${extra_packages}
 
 {%- if extra_cmd_after_install %}{{ '\n' }}
 RUN bash -l -c "conda activate /opt/conda_envs/{{ env_name }} && {{ extra_cmd_after_install }}"{% endif %}
