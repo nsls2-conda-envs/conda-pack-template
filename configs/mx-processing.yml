@@ -1,0 +1,7 @@
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
+env_name: "mx-processing-2021-1.0"
+python_version: "3.7"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "conftrak abbix_analysisstore amostra=0.2 ispyb==5.6.2 pyepics"
+channels: "-c conda-forge -c lightsource2-tag"
