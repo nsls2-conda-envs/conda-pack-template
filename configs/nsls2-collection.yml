@@ -1,6 +1,7 @@
 docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
 env_name: "nsls2-collection-2021-2.0"
 conda_env_file: "nsls2-collection-2021-2.0-env.yml"
+conda_binary: "mamba"
 python_version: "3.7"
 pkg_name: ""
 pkg_version: ""
@@ -14,6 +15,7 @@ docker_upload:
   - ghcr
   - dockerhub
   # - quay
+zenodo_upload: "no"
 zenodo_metadata:
   metadata:
     title: "NSLS-II collection conda environment"
