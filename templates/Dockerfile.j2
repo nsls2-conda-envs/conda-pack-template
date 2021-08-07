@@ -15,7 +15,8 @@ ENV HOME="/home/conda"
 #   - /opt/conda_envs" >> /home/conda/.condarc
 
 COPY export.sh ${HOME}/export.sh
-COPY configs/${conda_env_file} ${HOME}/${conda_env_file}
+
+{% if conda_env_file %}COPY configs/${conda_env_file} ${HOME}/${conda_env_file}{{ "\n\n" }}{% endif -%}
 
 {% if extra_cmd_before_install %}RUN {{ extra_cmd_before_install }} && yum clean all{{ "\n\n" }}{% endif -%}
 
