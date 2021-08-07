@@ -27,6 +27,7 @@ RUN source /opt/conda/etc/profile.d/conda.sh && \
     {{ conda_binary }} create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}{% endif %}
 
 {%- if extra_cmd_after_install %}{{ '\n' }}
-RUN {{ conda_binary }} install -y --override-channels ${channels} -p /opt/conda_envs/${env_name} conda-pack ${extra_packages} && \
+RUN source /opt/conda/etc/profile.d/conda.sh && \
+    {{ conda_binary }} install -y --override-channels ${channels} -p /opt/conda_envs/${env_name} conda-pack ${extra_packages} && \
     {{ extra_cmd_after_install }} -p /opt/conda_envs/${env_name}{% endif %}
 
