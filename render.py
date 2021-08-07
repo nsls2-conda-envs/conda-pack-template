@@ -31,9 +31,11 @@ if __name__ == "__main__":
         params.setdefault("zenodo_upload", "no")
 
     script_location = os.path.abspath(os.path.dirname(__file__))
-    templates_dir = os.path.join(script_location, 'templates')
+    templates_dir = os.path.join(script_location, "templates")
     if not os.path.isdir(templates_dir):
-        raise FileNotFoundError(f"The directory '{templates_dir}' does not exist.")
+        raise FileNotFoundError(
+            f"The directory '{templates_dir}' does not exist."
+        )
 
     print(f"Script location: {script_location}")
 
