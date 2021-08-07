@@ -6,7 +6,7 @@ on:
 
 jobs:
   generate_conda_packd_envs:
-    name: Generate conda-pack'd envs with Python ${{ matrix.python-version }}
+    name: nsls2-collection conda-pack'd env with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
