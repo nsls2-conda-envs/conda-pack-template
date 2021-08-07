@@ -26,6 +26,7 @@ if __name__ == "__main__":
 
     params.setdefault("docker_upload", ["dockerhub", "ghcr", "quay"])
     params.setdefault("conda_binary", "conda")
+    params.setdefault("conda_env_file", None)
 
     zenodo_metadata_present = params.pop(
         "zenodo_metadata", None
