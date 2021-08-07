@@ -17,4 +17,4 @@ conda env export -p /opt/conda_envs/${env_name} -f ${build_dir}/${env_name}.yml 
 conda-pack -o ${build_dir}/${env_name}.tar.gz
 openssl sha256 ${build_dir}/${env_name}.tar.gz > ${build_dir}/${env_name}-sha256sum.txt
 chmod -v 664 ${build_dir}/${env_name}[.-]*
-conda deactivate
+# conda deactivate
