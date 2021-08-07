@@ -62,7 +62,7 @@ jobs:
           conda config --show
           printenv | sort
 
-      - name: render n2sn config
+      - name: render nsls2-collection config
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
@@ -77,7 +77,7 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          bash ./runner-n2sn.sh
+          bash ./runner-nsls2-collection.sh
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
