@@ -70,14 +70,14 @@ jobs:
           python3 render.py -c configs/nsls2-collection.yml
           ls -la
           cat ./Dockerfile
-          cat ./runner-nsls2-collection.sh
+          cat ./runner-nsls2-collection-2021-2.0.sh
 
       - name: run a build with Docker
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          bash ./runner-nsls2-collection.sh
+          bash ./runner-nsls2-collection-2021-2.0.sh
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
