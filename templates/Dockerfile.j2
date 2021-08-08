@@ -14,11 +14,11 @@ ENV HOME="/home/conda"
 #   - ~/conda_envs\n\
 #   - /opt/conda_envs" >> /home/conda/.condarc
 
+{% if extra_cmd_before_install %}RUN {{ extra_cmd_before_install }} && yum clean all{{ "\n\n" }}{% endif -%}
+
 COPY export.sh ${HOME}/export.sh
 
 {% if conda_env_file %}COPY configs/${conda_env_file} ${HOME}/${conda_env_file}{{ "\n\n" }}{% endif -%}
-
-{% if extra_cmd_before_install %}RUN {{ extra_cmd_before_install }} && yum clean all{{ "\n\n" }}{% endif -%}
 
 RUN source /opt/conda/etc/profile.d/conda.sh && \
     conda install -y ${channels} conda mamba && \
