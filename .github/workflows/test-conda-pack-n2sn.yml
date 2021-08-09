@@ -76,7 +76,8 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          python3 render.py -c configs/n2sn.yml
+          python3 render.py -c configs/n2sn.yml -f Dockerfile.j2
+          python3 render.py -c configs/n2sn.yml -f runner.sh.j2
           ls -la
           cat ./Dockerfile
           cat ./runner-n2sn.sh
