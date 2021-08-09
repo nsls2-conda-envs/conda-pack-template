@@ -1,12 +1,12 @@
 name : tests
 
 on:
-  push:
+  # push:
   pull_request:
 
 jobs:
   generate_conda_packd_envs:
-    name: Generate conda-pack'd envs with Python ${{ matrix.python-version }}
+    name: nsls2-collection conda-pack'd env with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -62,22 +62,22 @@ jobs:
           conda config --show
           printenv | sort
 
-      - name: render n2sn config
+      - name: render nsls2-collection config
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          python3 render.py -c configs/n2sn.yml
+          python3 render.py -c configs/nsls2-collection.yml
           ls -la
           cat ./Dockerfile
-          cat ./runner-n2sn.sh
+          cat ./runner-nsls2-collection-2021-2.1.sh
 
       - name: run a build with Docker
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          bash ./runner-n2sn.sh
+          bash ./runner-nsls2-collection-2021-2.1.sh
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/

@@ -23,17 +23,23 @@ if __name__ == "__main__":
 
     with open(config_file) as f:
         params = yaml.load(f, Loader=yaml.SafeLoader)
-    params.setdefault('docker_upload', ['dockerhub', 'ghcr', 'quay'])
+
+    params.setdefault("docker_upload", ["dockerhub", "ghcr", "quay"])
+    params.setdefault("conda_binary", "conda")
+    params.setdefault("conda_env_file", None)
+
     zenodo_metadata_present = params.pop(
-        'zenodo_metadata', None
+        "zenodo_metadata", None
     )  # removing the parameters that are not needed for rendering
     if zenodo_metadata_present:
-        params.setdefault('zenodo_upload', 'yes')
+        params.setdefault("zenodo_upload", "no")
 
     script_location = os.path.abspath(os.path.dirname(__file__))
-    templates_dir = os.path.join(script_location, 'templates')
+    templates_dir = os.path.join(script_location, "templates")
     if not os.path.isdir(templates_dir):
-        raise FileNotFoundError(f"The directory '{templates_dir}' does not exist.")
+        raise FileNotFoundError(
+            f"The directory '{templates_dir}' does not exist."
+        )
 
     print(f"Script location: {script_location}")
 

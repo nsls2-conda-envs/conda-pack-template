@@ -5,18 +5,29 @@ ENV python_version="{{ python_version }}"
 ENV pkg_name="{% if pkg_name %}{{ pkg_name }}={{ pkg_version }}{% endif %}"
 ENV extra_packages="{{ extra_packages }}"
 ENV channels="{{ channels }}"
+ENV conda_env_file="{{ conda_env_file }}"
+ENV conda_binary="{{ conda_binary }}"
+ENV HOME="/home/conda"
 
 # RUN echo "always_yes: true\n\
 # envs_dirs:\n\
 #   - ~/conda_envs\n\
 #   - /opt/conda_envs" >> /home/conda/.condarc
 
-RUN yum install curl mesa-libGL -y && yum clean all && \
-    source /opt/conda/etc/profile.d/conda.sh && \
-    conda install conda -y && \
-    conda create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}
+{% if extra_cmd_before_install %}RUN {{ extra_cmd_before_install }} && yum clean all{{ "\n\n" }}{% endif -%}
+
+COPY export.sh ${HOME}/export.sh
+
+{% if conda_env_file %}COPY configs/${conda_env_file} ${HOME}/${conda_env_file}{{ "\n\n" }}{% endif -%}
+
+RUN source /opt/conda/etc/profile.d/conda.sh && \
+    conda install -y ${channels} conda mamba && \
+    {% if conda_env_file -%}
+    {{ conda_binary }} env create -p /opt/conda_envs/${env_name} --file=${HOME}/${conda_env_file}{% else -%}
+    {{ conda_binary }} create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}{% endif %}
 
 {%- if extra_cmd_after_install %}{{ '\n' }}
-RUN bash -l -c "conda activate /opt/conda_envs/{{ env_name }} && {{ extra_cmd_after_install }}"{% endif %}
+RUN source /opt/conda/etc/profile.d/conda.sh && \
+    {{ conda_binary }} install -y --override-channels ${channels} -p /opt/conda_envs/${env_name} conda-pack ${extra_packages} && \
+    {{ extra_cmd_after_install }} -p /opt/conda_envs/${env_name}{% endif %}
 
-# COPY export.sh /home/conda/
