@@ -18,7 +18,7 @@ ENV HOME="/home/conda"
 
 COPY export.sh ${HOME}/export.sh
 
-{% if conda_env_file %}COPY configs/${conda_env_file} ${HOME}/${conda_env_file}{{ "\n\n" }}{% endif -%}
+{% if conda_env_file %}COPY envs/${conda_env_file} ${HOME}/${conda_env_file}{{ "\n\n" }}{% endif -%}
 
 RUN source /opt/conda/etc/profile.d/conda.sh && \
     conda install -y ${channels} conda mamba && \
