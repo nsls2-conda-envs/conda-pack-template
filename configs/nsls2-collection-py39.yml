@@ -1,6 +1,6 @@
 docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
-env_name: "nsls2-collection-2021-2.0-py39"
-conda_env_file: "nsls2-collection-2021-2.0-py39-env.yml"
+env_name: "nsls2-collection-2021-2.1-py39"
+conda_env_file: "nsls2-collection-2021-2.1-py39-env.yml"
 conda_binary: "mamba"
 python_version: "3.9"
 pkg_name: ""
