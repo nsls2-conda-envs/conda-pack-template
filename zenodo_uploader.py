@@ -84,6 +84,12 @@ def search_for_deposition(
         f"Title: {deposition['metadata']['title']}\n"
         f"Publication date: {deposition['metadata']['publication_date']}\n"
     )
+    
+    update_url = "https://sandbox.zenodo.org/deposit/{deposition['id']}"
+    headers = {"Content-Type": "application/json"}
+    print(f"{deposition['metadata']}")
+
+    r = requests.put(update_url, data=json.dumps(f"{deposition['metadata']}"), headers=headers)
     return (
         deposition["id"],
         deposition["links"]["bucket"],
