@@ -1,12 +1,12 @@
-name : test_nsls2_collection
+name : test_render_all
 
 on:
   # push:
   pull_request:
 
 jobs:
-  generate_conda_packd_envs:
-    name: nsls2-collection conda-pack'd env with Python ${{ matrix.python-version }}
+  render_all_configs:
+    name: render all configs
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,18 +14,6 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Set env.REPOSITORY_NAME  # just the repo, as opposed to org/repo
-        shell: bash -l {0}
-        run: |
-          export REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}
-          echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_ENV
-
-      - name: Set secrets
-        shell: bash -l {0}
-        run: |
-          export ZENODO_ACCESS_TOKEN=${{ secrets.ZENODO_ACCESS_TOKEN }}
-          echo "ZENODO_ACCESS_TOKEN=${ZENODO_ACCESS_TOKEN}" >> $GITHUB_ENV
-
       - name: checkout the code
         uses: actions/checkout@v2
 
@@ -62,23 +50,16 @@ jobs:
           conda config --show
           printenv | sort
 
-      - name: render nsls2-collection config
+      - name: render all configs
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          python3 render.py -c configs/nsls2-collection.yml -f Dockerfile.j2
-          python3 render.py -c configs/nsls2-collection.yml -f runner.sh.j2
+          for f in $(ls -1 configs/*.yml); do
+              echo $f
+              python3 render.py -c ${f} -f Dockerfile.j2
+              python3 render.py -c ${f} -f runner.sh.j2
+              cat Dockerfile
+              cat runner-$(echo $(basename ${f}) | awk -F. '{print $1}').sh
+          done
           ls -la
-          cat ./Dockerfile
-          cat ./runner-nsls2-collection-2021-2.1.sh
-
-      - name: run a build with Docker
-        shell: bash -l {0}
-        run: |
-          # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
-          set -vxeuo pipefail
-          bash ./runner-nsls2-collection-2021-2.1.sh
-          ls -laF
-          sudo chown -v $USER: artifacts/*
-          ls -laF artifacts/
