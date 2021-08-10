@@ -20,8 +20,7 @@ def search_for_deposition(
     token=None,
 ):
     print(
-        f"Searching for depositions with title='{title}' and "
-        f"owner='{owner}'...\n"
+        f"Searching for depositions with title='{title}' and " f"owner='{owner}'...\n"
     )
     search = f'metadata.title:"{title}"'
     if owner:
@@ -63,9 +62,8 @@ def search_for_deposition(
 
     depositions = []
     for deposition in records:
-        if (
-            deposition["metadata"]["title"] == title
-            or deposition["owner"] == owner
+        if deposition["submitted"] and (
+            (deposition["metadata"]["title"] == title) or (deposition["owner"] == owner)
         ):
             depositions.append(deposition)
 
@@ -84,12 +82,8 @@ def search_for_deposition(
         f"Title: {deposition['metadata']['title']}\n"
         f"Publication date: {deposition['metadata']['publication_date']}\n"
     )
-    
-    update_url = "https://sandbox.zenodo.org/deposit/{deposition['id']}"
-    headers = {"Content-Type": "application/json"}
-    print(f"{deposition['metadata']}")
+    print(deposition)
 
-    r = requests.put(update_url, data=json.dumps(f"{deposition['metadata']}"), headers=headers)
     return (
         deposition["id"],
         deposition["links"]["bucket"],
@@ -100,10 +94,7 @@ def search_for_deposition(
 def create_new_version(
     deposition_id, token, zenodo_server="https://sandbox.zenodo.org/api/"
 ):
-    url = (
-        f"{zenodo_server}deposit/depositions/{deposition_id}/"
-        f"actions/newversion"
-    )
+    url = f"{zenodo_server}deposit/depositions/{deposition_id}/" f"actions/newversion"
     r = requests.post(
         url,
         params={"access_token": token},
@@ -128,9 +119,7 @@ def create_new_version(
     )
 
 
-def create_new_deposition(
-    token, zenodo_server="https://sandbox.zenodo.org/api/"
-):
+def create_new_deposition(token, zenodo_server="https://sandbox.zenodo.org/api/"):
     url = f"{zenodo_server}deposit/depositions"
     r = requests.post(
         url,
@@ -168,9 +157,7 @@ def upload_to_zenodo(
         response.raise_for_status()
 
         print(f"Comparing {filename} checksum with files on zenodo...")
-        files_checksums = [
-            file["checksum"] for file in response.json()["files"]
-        ]
+        files_checksums = [file["checksum"] for file in response.json()["files"]]
         md5sum_file = f"{os.path.dirname(filename)}/{env_name}-md5sum.txt"
         with open(md5sum_file, "r") as fp:
             content = fp.read()
@@ -212,7 +199,7 @@ def add_meta_data(
     r.raise_for_status()
 
 
-def publish_file(
+def publish_deposition(
     deposition_id,
     token,
     zenodo_server="https://sandbox.zenodo.org/api/",
@@ -222,7 +209,10 @@ def publish_file(
         f"{zenodo_server}deposit/depositions/{deposition_id}/actions/publish",
         params={"access_token": token},
     )
-
+    if "errors" in r.json():
+        exit(
+            f"Error: Couldn't publish deposition! Here is what happened:\n{r.json()['errors'][0]['message']}"
+        )
     r.raise_for_status()
 
 
@@ -287,11 +277,9 @@ if __name__ == "__main__":
         owner=owner,
         token=token,
     )
-
+    print(deposition_id, bucket_url, file_url)
     if not deposition_id:
-        deposition_id, bucket_url, file_url = create_new_deposition(
-            token=token
-        )
+        deposition_id, bucket_url, file_url = create_new_deposition(token=token)
 
         for file in args.files_to_upload:
             filename = os.path.abspath(file)
@@ -318,7 +306,7 @@ if __name__ == "__main__":
             )
 
         if args.publish:
-            publish_file(deposition_id=deposition_id, token=token)
+            publish_deposition(deposition_id=deposition_id, token=token)
     else:
         for file in args.files_to_upload:
             filename = os.path.abspath(file)
@@ -333,6 +321,7 @@ if __name__ == "__main__":
                 deposition_id=deposition_id,
                 token=token,
             )
+
             upload_to_zenodo(
                 deposition_id=deposition_id,
                 filename=file,
@@ -342,5 +331,5 @@ if __name__ == "__main__":
                 env_name=env_name,
                 token=token,
             )
-        if args.publish:
-            publish_file(deposition_id=deposition_id, token=token)
+            if args.publish:
+                publish_deposition(deposition_id=deposition_id, token=token)
