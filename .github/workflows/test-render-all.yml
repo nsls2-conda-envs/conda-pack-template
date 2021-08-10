@@ -61,11 +61,5 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          for f in $(ls -1 configs/*.yml); do
-              echo $f
-              python3 render.py -c ${f} -f Dockerfile.j2
-              python3 render.py -c ${f} -f runner.sh.j2
-              cat Dockerfile
-              cat runner-$(echo $(basename ${f}) | awk -F. '{print $1}').sh
-          done
+          ./scripts/render-all.sh
           ls -la

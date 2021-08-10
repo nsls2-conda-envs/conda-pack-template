@@ -45,12 +45,13 @@ def validate_template_file(template_file, templates_dir):
     return template_file
 
 
-def _render_file(template_file, output_file, **params):
+def _render_file(template_file, output_file, debug=False, **params):
     with open(template_file) as f:
         template = Template(f.read())
 
     text = template.render(params=params, **params)
-    print(text)
+    if debug:
+        print(text)
 
     with open(output_file, "w") as f:
         f.write(text)
@@ -130,3 +131,5 @@ if __name__ == "__main__":
         )
     else:
         parser.exit(f"Unknown template file: {template_file}")
+
+    print(output_file)  # used by CI to get the file name
