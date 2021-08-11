@@ -1,7 +1,7 @@
 name : test_render_all
 
 on:
-  # push:
+  push:
   pull_request:
 
 jobs:

@@ -1,7 +1,7 @@
 name : test_render_profile_collection_ci
 
 on:
-  # push:
+  push:
   pull_request:
 
 jobs:
