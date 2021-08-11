@@ -1,4 +1,4 @@
-name : tests
+name : test_nsls2_collection
 
 on:
   # push:
@@ -67,7 +67,8 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          python3 render.py -c configs/nsls2-collection.yml
+          python3 render.py -c configs/nsls2-collection.yml -f Dockerfile.j2
+          python3 render.py -c configs/nsls2-collection.yml -f runner.sh.j2
           ls -la
           cat ./Dockerfile
           cat ./runner-nsls2-collection-2021-2.1.sh

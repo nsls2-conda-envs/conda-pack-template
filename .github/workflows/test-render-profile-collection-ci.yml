@@ -1,12 +1,12 @@
-name : test_n2sn
+name : test_render_profile_collection_ci
 
 on:
-  # push:
+  push:
   pull_request:
 
 jobs:
-  generate_conda_packd_envs:
-    name: n2sn conda-pack'd env with Python ${{ matrix.python-version }}
+  render_profile_collection_ci_config:
+    name: render profile-collection-ci config
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,21 +19,6 @@ jobs:
         run: |
           export REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}
           echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_ENV
-
-      - name: Set secrets
-        shell: bash -l {0}
-        run: |
-          export ZENODO_ACCESS_TOKEN=${{ secrets.ZENODO_ACCESS_TOKEN }}
-          echo "ZENODO_ACCESS_TOKEN=${ZENODO_ACCESS_TOKEN}" >> $GITHUB_ENV
-
-      - name: Set non-secret environment variables
-        shell: bash -l {0}
-        run: |
-          # ZENODO_OWNER_ID is an integer number corresponding to the sandbox
-          # account with the token above, that is used to upload files, and to
-          # search by the owner id.
-          export ZENODO_OWNER_ID="40261"  # mrakitin's owner id on sandbox.zenodo.org
-          echo "ZENODO_OWNER_ID=${ZENODO_OWNER_ID}" >> $GITHUB_ENV
 
       - name: checkout the code
         uses: actions/checkout@v2
@@ -71,24 +56,12 @@ jobs:
           conda config --show
           printenv | sort
 
-      - name: render n2sn config
+      - name: render nsls2-collection-profile-collection-ci.yml with Zenodo sandbox record for 'n2sn'
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          python3 render.py -c configs/n2sn.yml -f Dockerfile.j2
-          python3 render.py -c configs/n2sn.yml -f runner.sh.j2
-          ls -la
-          cat ./Dockerfile
-          cat ./runner-n2sn.sh
-
-      - name: run a build with Docker
-        shell: bash -l {0}
-        run: |
-          # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
-          set -vxeuo pipefail
-          bash ./runner-n2sn.sh
+          # Hard-coded sandbox entry from https://sandbox.zenodo.org/record/893295:
+          rendered_file=$(python render.py -c configs/n2sn.yml -f nsls2-collection-profile-collection-ci.yml -z 893295 -s)
           ls -laF
-          sudo chown -v $USER: artifacts/*
-          ls -laF artifacts/
-          cat artifacts/*-sha256sum.txt artifacts/*-md5sum.txt
+          cat ${rendered_file}
