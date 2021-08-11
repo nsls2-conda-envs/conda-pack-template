@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 
 import requests
 import yaml
+import pprint
 
 
 def search_for_deposition(
@@ -15,8 +16,7 @@ def search_for_deposition(
     token=None,
 ):
     print(
-        f"Searching for depositions with title='{title}' and "
-        f"owner='{owner}'...\n"
+        f"Searching for depositions with title='{title}' and " f"owner='{owner}'...\n"
     )
     search = f'metadata.title:"{title}"'
     if owner:
@@ -55,14 +55,26 @@ def search_for_deposition(
         return None, None, None
 
     print(f"Found ***{len(records)}*** depositions!")
+    print(f"\nid, Title, files\n")
 
     depositions = []
+
     for deposition in records:
         if deposition["submitted"] and (
-            (deposition["metadata"]["title"] == title)
-            or (deposition["owner"] == owner)
+            (deposition["metadata"]["title"] == title) or (deposition["owner"] == owner)
         ):
             depositions.append(deposition)
+        print(
+            [
+                deposition["id"],
+                deposition["metadata"]["title"],
+                ", ".join(
+                    [file["filename"] for file in deposition["files"]]
+                    if "files" in deposition
+                    else []
+                ),
+            ]
+        )
 
     if not depositions:
         print(f"No records found for search: '{title}'")
@@ -91,10 +103,7 @@ def search_for_deposition(
 def create_new_version(
     deposition_id, token, zenodo_server="https://sandbox.zenodo.org/api/"
 ):
-    url = (
-        f"{zenodo_server}deposit/depositions/{deposition_id}/"
-        f"actions/newversion"
-    )
+    url = f"{zenodo_server}deposit/depositions/{deposition_id}/" f"actions/newversion"
     r = requests.post(
         url,
         params={"access_token": token},
@@ -119,9 +128,7 @@ def create_new_version(
     )
 
 
-def create_new_deposition(
-    token, zenodo_server="https://sandbox.zenodo.org/api/"
-):
+def create_new_deposition(token, zenodo_server="https://sandbox.zenodo.org/api/"):
     url = f"{zenodo_server}deposit/depositions"
     r = requests.post(
         url,
@@ -159,9 +166,7 @@ def upload_to_zenodo(
         response.raise_for_status()
 
         print(f"Comparing {filename} checksum with files on zenodo...")
-        files_checksums = [
-            file["checksum"] for file in response.json()["files"]
-        ]
+        files_checksums = [file["checksum"] for file in response.json()["files"]]
         md5sum_file = f"{os.path.dirname(filename)}/{env_name}-md5sum.txt"
         with open(md5sum_file, "r") as fp:
             content = fp.read()
@@ -284,9 +289,7 @@ if __name__ == "__main__":
     )
     print(deposition_id, bucket_url, file_url)
     if not deposition_id:
-        deposition_id, bucket_url, file_url = create_new_deposition(
-            token=token
-        )
+        deposition_id, bucket_url, file_url = create_new_deposition(token=token)
 
         for file in args.files_to_upload:
             filename = os.path.abspath(file)
