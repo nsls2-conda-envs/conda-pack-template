@@ -2,4 +2,5 @@ conda-pack
 ipython
 jinja2
 pyyaml
+pyzenodo3
 requests

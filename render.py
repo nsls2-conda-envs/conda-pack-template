@@ -3,6 +3,10 @@ import os
 
 import yaml
 from jinja2 import Template
+from pyzenodo3.base import Zenodo
+
+ZENODO_URL = "https://zenodo.org/api/"
+ZENODO_SANDBOX_URL = "https://sandbox.zenodo.org/api/"
 
 
 def read_params(config_file):
@@ -87,6 +91,51 @@ def render_dockerfile(template_file, **params):
     return params, output_file
 
 
+def get_zenodo_deposition_info(
+    deposition_id=None, env_name=None, zenodo_url=ZENODO_URL
+):
+    if deposition_id is None:
+        raise RuntimeError("'deposition_id' cannot be None")
+    if env_name is None:
+        raise RuntimeError("'env_name' cannot be None")
+
+    token = os.getenv("ZENODO_ACCESS_TOKEN", "")
+    zenodo_client = Zenodo(api_key=token, base_url=zenodo_url)
+
+    record = zenodo_client.get_record(deposition_id)
+
+    file_metadata = []
+    files = record.data["files"]
+    for entry in files:
+        if entry["key"] == f"{env_name}.tar.gz":
+            file_metadata = entry
+            break
+    return file_metadata
+
+
+def render_profile_collection_config(
+    template_file, deposition_id, zenodo_url=ZENODO_URL, **params
+):
+    env_name = params["env_name"]  # such as 'nsls2-collection-2021-2.1-py39'
+    output_file = f"{env_name}.yml"
+    params["script_name"] = output_file
+
+    deposited_file_meta = get_zenodo_deposition_info(
+        deposition_id=deposition_id,
+        env_name=env_name,
+        zenodo_url=zenodo_url,
+    )
+    params["zenodo_deposition_id"] = deposition_id
+    params["zenodo_md5_checksum"] = deposited_file_meta["checksum"].split(":")[
+        -1
+    ]
+    _render_file(
+        template_file=template_file, output_file=output_file, **params
+    )
+
+    return params, output_file
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=(
@@ -115,19 +164,53 @@ if __name__ == "__main__":
         required=True,
         help="the template to render",
     )
+    parser.add_argument(
+        "-z",
+        "--zenodo-deposition-id",
+        dest="zenodo_deposition_id",
+        default=None,
+        help="Zenodo deposition_id used for rendering of the "
+        "profile-collection-ci config file",
+    )
+    parser.add_argument(
+        "-s",
+        "--sandbox",
+        dest="zenodo_sandbox",
+        action="store_true",
+        help="Switch to using sandbox.zenodo.org",
+    )
+
     args = parser.parse_args()
 
     params = read_params(args.config_file)
     templates_dir = validate_templates_dir(args.templates_dir)
     template_file = validate_template_file(args.template_file, templates_dir)
 
+    if args.zenodo_sandbox:
+        zenodo_url = ZENODO_SANDBOX_URL
+    else:
+        zenodo_url = ZENODO_URL
+
     if template_file.endswith("runner.sh.j2"):
         params, output_file = render_runner(
-            template_file=template_file, **params
+            template_file=template_file,
+            **params,
         )
     elif template_file.endswith("Dockerfile.j2"):
         params, output_file = render_dockerfile(
-            template_file=template_file, **params
+            template_file=template_file,
+            **params,
+        )
+    elif template_file.endswith("profile-collection-ci.yml"):
+        if args.zenodo_deposition_id is None:
+            parser.print_help()
+            parser.exit("Zenodo deposition_id should be provided.")
+        params["zenodo_sandbox"] = args.zenodo_sandbox
+        params, output_file = render_profile_collection_config(
+            template_file=template_file,
+            deposition_id=args.zenodo_deposition_id,
+            zenodo_url=zenodo_url,
+            **params,
         )
     else:
         parser.exit(f"Unknown template file: {template_file}")
