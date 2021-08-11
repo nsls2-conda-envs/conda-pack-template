@@ -1,0 +1,7 @@
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
+env_name: "lsdc-kafka"
+python_version: "3.9"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "python-confluent-kafka pyepics"
+channels: "-c conda-forge"

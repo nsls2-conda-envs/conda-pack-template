@@ -1,0 +1,8 @@
+docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
+conda_binary: "mamba"
+env_name: "lsdc-server_2021-1.3"
+python_version: "3.7"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "collection jsonschema conftrak abbix_analysisstore amostra==0.2 ispyb==5.6.2 python-confluent-kafka mamba"
+channels: "-c conda-forge -c lightsource2-tag"
