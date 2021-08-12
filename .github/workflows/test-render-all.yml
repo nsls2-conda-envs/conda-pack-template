@@ -61,5 +61,24 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
+
+          onestep_dir="1-step"
+          twostep_dir="2-step"
+          mkdir -v ${onestep_dir} ${twostep_dir}
+
+          # Run a 1-step rendering:
+          ./scripts/render-all.sh oneshot
+          ls -la
+          mv -v Dockerfile runner-*.sh ${onestep_dir}
+
+          # Run a 2-step rendering:
           ./scripts/render-all.sh
           ls -la
+          mv -v Dockerfile runner-*.sh ${twostep_dir}
+
+          # Compare the files:
+          for f1 in $(ls -1 ${onestep_dir}/*); do
+              f2="${twostep_dir}/$(basename $f1)"
+              echo "Comparing ${f1} vs. ${f2}"
+              diff ${f1} ${f2}
+          done
