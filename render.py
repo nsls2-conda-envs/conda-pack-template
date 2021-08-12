@@ -160,8 +160,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-f",
         "--template-file",
-        dest="template_file",
+        dest="template_files",
         required=True,
+        action="append",
         help="the template to render",
     )
     parser.add_argument(
@@ -182,37 +183,40 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    params = read_params(args.config_file)
-    templates_dir = validate_templates_dir(args.templates_dir)
-    template_file = validate_template_file(args.template_file, templates_dir)
-
     if args.zenodo_sandbox:
         zenodo_url = ZENODO_SANDBOX_URL
     else:
         zenodo_url = ZENODO_URL
 
-    if template_file.endswith("runner.sh.j2"):
-        params, output_file = render_runner(
-            template_file=template_file,
-            **params,
-        )
-    elif template_file.endswith("Dockerfile.j2"):
-        params, output_file = render_dockerfile(
-            template_file=template_file,
-            **params,
-        )
-    elif template_file.endswith("profile-collection-ci.yml"):
-        if args.zenodo_deposition_id is None:
-            parser.print_help()
-            parser.exit("Zenodo deposition_id should be provided.")
-        params["zenodo_sandbox"] = args.zenodo_sandbox
-        params, output_file = render_profile_collection_config(
-            template_file=template_file,
-            deposition_id=args.zenodo_deposition_id,
-            zenodo_url=zenodo_url,
-            **params,
-        )
-    else:
-        parser.exit(f"Unknown template file: {template_file}")
+    params = read_params(args.config_file)
+    templates_dir = validate_templates_dir(args.templates_dir)
 
-    print(output_file)  # used by CI to get the file name
+    template_files = args.template_files
+    for template_file in template_files:
+        template_file = validate_template_file(template_file, templates_dir)
+
+        if template_file.endswith("runner.sh.j2"):
+            params, output_file = render_runner(
+                template_file=template_file,
+                **params,
+            )
+        elif template_file.endswith("Dockerfile.j2"):
+            params, output_file = render_dockerfile(
+                template_file=template_file,
+                **params,
+            )
+        elif template_file.endswith("profile-collection-ci.yml"):
+            if args.zenodo_deposition_id is None:
+                parser.print_help()
+                parser.exit("Zenodo deposition_id should be provided.")
+            params["zenodo_sandbox"] = args.zenodo_sandbox
+            params, output_file = render_profile_collection_config(
+                template_file=template_file,
+                deposition_id=args.zenodo_deposition_id,
+                zenodo_url=zenodo_url,
+                **params,
+            )
+        else:
+            parser.exit(f"Unknown template file: {template_file}")
+
+        print(output_file)  # used by CI to get the file name
