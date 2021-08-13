@@ -251,7 +251,8 @@ def delete_deposition_files(
     files = r.json()
     for file in files:
         r = requests.delete(
-            f"{zenodo_server}deposit/depositions/{deposition_id}/files/{file['id']}",
+            f"{zenodo_server}deposit/depositions/"
+            f"{deposition_id}/files/{file['id']}",
             params={"access_token": token},
         )
         r.raise_for_status()
