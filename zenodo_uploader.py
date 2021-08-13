@@ -3,9 +3,10 @@ import json
 import os
 import traceback
 from urllib.parse import urlencode
-from tabulate import tabulate
+
 import requests
 import yaml
+from tabulate import tabulate
 
 
 def search_for_deposition(
@@ -15,7 +16,8 @@ def search_for_deposition(
     token=None,
 ):
     print(
-        f"Searching for depositions with title='{title}' and " f"owner='{owner}'...\n"
+        f"Searching for depositions with title='{title}' and "
+        f"owner='{owner}'...\n"
     )
     search = f'title:"{title}"'
     if owner:
@@ -66,7 +68,9 @@ def search_for_deposition(
     to_print = []
 
     for deposition in records:
-        if (deposition["metadata"]["title"] == title) or (deposition["owner"] == owner):
+        if (deposition["metadata"]["title"] == title) or (
+            deposition["owner"] == owner
+        ):
             depositions.append(deposition)
         to_print.append(
             {
@@ -112,7 +116,10 @@ def create_new_version(
     deposition_id, token, zenodo_server="https://sandbox.zenodo.org/api/"
 ):
     print(f"Creating new version of deposition: {deposition_id} ...")
-    url = f"{zenodo_server}deposit/depositions/{deposition_id}/" f"actions/newversion"
+    url = (
+        f"{zenodo_server}deposit/depositions/{deposition_id}/"
+        f"actions/newversion"
+    )
     r = requests.post(
         url,
         params={"access_token": token},
@@ -141,8 +148,10 @@ def create_new_version(
     )
 
 
-def create_new_deposition(token, zenodo_server="https://sandbox.zenodo.org/api/"):
-    print(f"Creating new deposition...")
+def create_new_deposition(
+    token, zenodo_server="https://sandbox.zenodo.org/api/"
+):
+    print("Creating new deposition...")
     url = f"{zenodo_server}deposit/depositions"
     r = requests.post(
         url,
@@ -181,7 +190,9 @@ def upload_to_zenodo(
         response.raise_for_status()
 
         print(f"Comparing {filename} checksum with files on zenodo...")
-        files_checksums = [file["checksum"] for file in response.json()["files"]]
+        files_checksums = [
+            file["checksum"] for file in response.json()["files"]
+        ]
         md5sum_file = f"{os.path.dirname(filename)}/{env_name}-md5sum.txt"
         with open(md5sum_file, "r") as fp:
             content = fp.read()
@@ -237,7 +248,8 @@ def delete_deposition_files(
     files = r.json()
     for file in files:
         r = requests.delete(
-            f"{zenodo_server}deposit/depositions/{deposition_id}/files/{file['id']}",
+            f"{zenodo_server}deposit/depositions/"
+            f"{deposition_id}/files/{file['id']}",
             params={"access_token": token},
         )
         r.raise_for_status()
@@ -324,7 +336,9 @@ if __name__ == "__main__":
         token=token,
     )
     if not deposition_id:
-        deposition_id, bucket_url, file_url = create_new_deposition(token=token)
+        deposition_id, bucket_url, file_url = create_new_deposition(
+            token=token
+        )
 
         for file in args.files_to_upload:
             filename = os.path.abspath(file)
