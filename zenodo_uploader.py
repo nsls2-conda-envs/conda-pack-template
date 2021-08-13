@@ -1,5 +1,4 @@
 import argparse
-import argparse
 import json
 import os
 import textwrap
@@ -18,7 +17,7 @@ def search_for_deposition(
     showindex=True,
 ):
     print(
-        f"Searching for depositions with title='{title}' and " 
+        f"Searching for depositions with title='{title}' and "
         f"owner='{owner}'...\n"
     )
     search = f'title:"{title}"'
@@ -79,7 +78,7 @@ def search_for_deposition(
     for deposition in records:
         if (deposition["metadata"]["title"] == title) or (
             deposition["owner"] == owner
-            ):
+        ):
             depositions.append(deposition)
 
         data = deposition
@@ -131,7 +130,7 @@ def create_new_version(
 ):
     print(f"Creating new version of deposition: {deposition_id} ...")
     url = (
-        f"{zenodo_server}deposit/depositions/{deposition_id}/" 
+        f"{zenodo_server}deposit/depositions/{deposition_id}/"
         f"actions/newversion"
     )
     r = requests.post(
