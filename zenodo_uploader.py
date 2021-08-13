@@ -32,7 +32,7 @@ def search_for_deposition(
         "size": 20,
         "page": 1,
         "status": "published",
-        "all_versions": 1,
+        "all_versions": True,
     }
     url = f"{zenodo_server}deposit/depositions?{urlencode(params)}"
     print(f"Search URL: {url}\n")
