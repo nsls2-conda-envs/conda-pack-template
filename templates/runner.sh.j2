@@ -71,6 +71,9 @@ exit 1
 python3 zenodo_uploader.py -f ${artifacts_dir}/${env_name}.tar.gz \
                            -f ${artifacts_dir}/${env_name}.yml \
                            -f ${artifacts_dir}/${env_name}-sha256sum.txt \
+                           -f ${artifacts_dir}/${env_name}-md5sum.txt \
+                           -f Dockerfile \
+                           -f ${0} \
                            -c configs/${env_name}.yml \
                            --publish
 {% endif %}
