@@ -67,18 +67,18 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          python3 render.py -c configs/nsls2-collection.yml -f Dockerfile.j2
-          python3 render.py -c configs/nsls2-collection.yml -f runner.sh.j2
+          dockerfile=$(python3 render.py -c configs/nsls2-collection.yml -f Dockerfile.j2)
+          runner=$(python3 render.py -c configs/nsls2-collection.yml -f runner.sh.j2)
           ls -la
-          cat ./Dockerfile
-          cat ./runner-nsls2-collection-2021-2.1.sh
+          cat ${dockerfile}
+          cat ${runner}
 
       - name: run a build with Docker
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          bash ./runner-nsls2-collection-2021-2.1.sh
+          bash ./runner-nsls2-collection-2021-2.2.sh
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
