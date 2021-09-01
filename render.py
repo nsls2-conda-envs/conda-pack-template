@@ -19,6 +19,7 @@ def read_params(config_file):
     params.setdefault("docker_upload", ["dockerhub", "ghcr", "quay"])
     params.setdefault("conda_binary", "conda")
     params.setdefault("conda_env_file", None)
+    params.setdefault("config_file", config_file)
 
     zenodo_metadata_present = params.pop(
         "zenodo_metadata", None

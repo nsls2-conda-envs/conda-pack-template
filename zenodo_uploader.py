@@ -4,9 +4,10 @@ import os
 import textwrap
 import traceback
 from urllib.parse import urlencode
-from tabulate import tabulate
+
 import requests
 import yaml
+from tabulate import tabulate
 
 
 def search_for_deposition(
@@ -96,7 +97,14 @@ def search_for_deposition(
         )
         data_dict["dates"].append(meta["publication_date"])
 
-    print(tabulate(data_dict, headers="keys", showindex=showindex))
+    if showindex:
+        counter = range(1, len(records) + 1)
+    else:
+        counter = False
+
+    print(
+        tabulate(data_dict, headers="keys", showindex=counter, tablefmt="grid")
+    )
 
     if not depositions:
         print(f"No records found for search: '{title}'")
