@@ -206,7 +206,7 @@ if __name__ == "__main__":
                 template_file=template_file,
                 **params,
             )
-        elif template_file.endswith("profile-collection-ci.yml"):
+        elif template_file.endswith("profile-collection-ci.yml.j2"):
             if args.zenodo_deposition_id is None:
                 parser.print_help()
                 parser.exit("Zenodo deposition_id should be provided.")

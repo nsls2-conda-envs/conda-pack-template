@@ -56,12 +56,12 @@ jobs:
           conda config --show
           printenv | sort
 
-      - name: render nsls2-collection-profile-collection-ci.yml with Zenodo sandbox record for 'n2sn'
+      - name: render nsls2-collection-profile-collection-ci.yml.j2 with Zenodo sandbox record for 'n2sn'
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
           # Hard-coded sandbox entry from https://sandbox.zenodo.org/record/893295:
-          rendered_file=$(python render.py -c configs/n2sn.yml -f nsls2-collection-profile-collection-ci.yml -z 893295 -s)
+          rendered_file=$(python render.py -c configs/n2sn.yml -f nsls2-collection-profile-collection-ci.yml.j2 -z 893295 -s)
           ls -laF
           cat ${rendered_file}
