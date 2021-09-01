@@ -15,7 +15,7 @@ docker_upload:
   - ghcr
   - dockerhub
   # - quay
-zenodo_upload: "yes"
+zenodo_upload: "no"
 zenodo_metadata:
   metadata:
     title: "NSLS-II collection conda environment"
