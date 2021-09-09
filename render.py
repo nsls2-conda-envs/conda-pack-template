@@ -32,7 +32,7 @@ def read_params(config_file):
 
 
 def fix_docker_binary(params):
-    docker_binary = os.getenv("DOCKER_BINARY", "docker")
+    docker_binary = os.getenv("DOCKER_BINARY", params["docker_binary"])
     params["docker_binary"] = docker_binary
     return params
 
