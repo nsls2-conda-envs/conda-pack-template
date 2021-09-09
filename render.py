@@ -31,6 +31,12 @@ def read_params(config_file):
     return params
 
 
+def fix_docker_binary(params):
+    docker_binary = os.getenv("DOCKER_BINARY", "docker")
+    params["docker_binary"] = docker_binary
+    return params
+
+
 def validate_templates_dir(templates_dir):
     script_location = os.path.abspath(os.path.dirname(__file__))
     templates_dir = os.path.join(script_location, templates_dir)
@@ -191,6 +197,7 @@ if __name__ == "__main__":
         zenodo_url = ZENODO_URL
 
     params = read_params(args.config_file)
+    params = fix_docker_binary(params)
     templates_dir = validate_templates_dir(args.templates_dir)
 
     template_files = args.template_files
