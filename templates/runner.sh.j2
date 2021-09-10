@@ -68,6 +68,10 @@ exit 1
 {% endif -%}
 {% endfor -%}
 {%- if zenodo_upload == "yes" %}
+
+# Check the environment variables to make sure ZENODO_ACCESS_TOKEN exists.
+env | sort -u
+
 python3 zenodo_uploader.py -f ${artifacts_dir}/${env_name}.tar.gz \
                            -f ${artifacts_dir}/${env_name}.yml \
                            -f ${artifacts_dir}/${env_name}-sha256sum.txt \
