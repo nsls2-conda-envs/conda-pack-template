@@ -18,6 +18,7 @@ def read_params(config_file):
 
     params.setdefault("docker_upload", ["dockerhub", "ghcr", "quay"])
     params.setdefault("conda_binary", "conda")
+    params.setdefault("docker_binary", "docker")
     params.setdefault("conda_env_file", None)
     params.setdefault("config_file", config_file)
 
@@ -27,6 +28,12 @@ def read_params(config_file):
     if zenodo_metadata_present:
         params.setdefault("zenodo_upload", "no")
 
+    return params
+
+
+def fix_docker_binary(params):
+    docker_binary = os.getenv("DOCKER_BINARY", params["docker_binary"])
+    params["docker_binary"] = docker_binary
     return params
 
 
@@ -190,6 +197,7 @@ if __name__ == "__main__":
         zenodo_url = ZENODO_URL
 
     params = read_params(args.config_file)
+    params = fix_docker_binary(params)
     templates_dir = validate_templates_dir(args.templates_dir)
 
     template_files = args.template_files

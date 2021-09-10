@@ -17,7 +17,7 @@ mkdir -m 0777 -v -p ${artifacts_dir}
 
 timestamp=$(date +%Y%m%d%H%M%S)
 
-docker image build . -t ${env_name}:latest \
+${docker_binary} image build . -t ${env_name}:latest \
                      -t ${env_name}:${timestamp}
 
 daemon_mode="${GITHUB_ACTIONS:-false}"
@@ -26,7 +26,7 @@ if [ "${daemon_mode}" == "true" ]; then
 else
     interactive="-it"
 fi
-docker_run_cmd="docker run ${interactive} --rm --name ${env_name} \
+docker_run_cmd="${docker_binary} run ${interactive} --rm --name ${env_name} \
                     -v ${artifacts_dir}:${build_dir}:rw,z,delegated \
                     -v ${PWD}:${repo_dir} \
                     -e env_name -e channels -e build_dir \
@@ -35,33 +35,33 @@ echo -e "docker run command:\n\n${docker_run_cmd}\n"
 
 if [ "${daemon_mode}" == "true" ]; then
     container_id=$(${docker_run_cmd})
-    docker logs --follow $container_id
+    ${docker_binary} logs --follow $container_id
 else
     ${docker_run_cmd}
 fi
 
 {%- for key in docker_upload %}
 {% if key == "ghcr" %}
-# echo $GITHUB_TOKEN | docker login ghcr.io --username $GITHUB_USERNAME --password-stdin
-# docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
-# docker tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:latest
-# docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
-# docker image push ghcr.io/$GITHUB_USERNAME/${env_name}:latest
+# echo $GITHUB_TOKEN | ${docker_binary} login ghcr.io --username $GITHUB_USERNAME --password-stdin
+# ${docker_binary} tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
+# ${docker_binary} tag ${env_name}:${timestamp} ghcr.io/$GITHUB_USERNAME/${env_name}:latest
+# ${docker_binary} image push ghcr.io/$GITHUB_USERNAME/${env_name}:${timestamp}
+# ${docker_binary} image push ghcr.io/$GITHUB_USERNAME/${env_name}:latest
 {% elif key == "dockerhub" %}
-# echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-# docker tag ${env_name}:${timestamp} $DOCKER_REPO:${timestamp}
-# docker tag ${env_name}:${timestamp} $DOCKER_REPO:latest
-# docker push $DOCKER_REPO:${timestamp}
-# docker push $DOCKER_REPO:latest
+# echo $DOCKER_PASSWORD | ${docker_binary} login --username $DOCKER_USERNAME --password-stdin
+# ${docker_binary} tag ${env_name}:${timestamp} $DOCKER_REPO:${timestamp}
+# ${docker_binary} tag ${env_name}:${timestamp} $DOCKER_REPO:latest
+# ${docker_binary} push $DOCKER_REPO:${timestamp}
+# ${docker_binary} push $DOCKER_REPO:latest
 {% elif key == "quay" %}
-# docker create --name extra-container ${env_name}:${timestamp}
-# echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
-# docker commit extra-container quay.io/$QUAY_REPO:${timestamp}
-# docker commit extra-container quay.io/$QUAY_REPO:latest
-# docker push quay.io/$QUAY_REPO:${timestamp}
-# docker push quay.io/$QUAY_REPO:latest
-# docker rm extra-container
-# docker image rm quay.io/$QUAY_REPO
+# ${docker_binary} create --name extra-container ${env_name}:${timestamp}
+# echo $QUAY_PASSWORD | ${docker_binary} login quay.io -u $QUAY_USERNAME --password-stdin
+# ${docker_binary} commit extra-container quay.io/$QUAY_REPO:${timestamp}
+# ${docker_binary} commit extra-container quay.io/$QUAY_REPO:latest
+# ${docker_binary} push quay.io/$QUAY_REPO:${timestamp}
+# ${docker_binary} push quay.io/$QUAY_REPO:latest
+# ${docker_binary} rm extra-container
+# ${docker_binary} image rm quay.io/$QUAY_REPO
 {% else %}
 echo "Invalid entry."
 exit 1
