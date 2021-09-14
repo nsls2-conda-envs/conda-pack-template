@@ -5,7 +5,7 @@ on:
 
 jobs:
   generate_conda_packd_envs:
-    name: n2sn conda-pack'd env with Python ${{ matrix.python-version }}
+    name: n2sn conda-pack'd env with Python build using podman as the docker binary ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -58,6 +58,11 @@ jobs:
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
           python3 -m pip install -r requirements-dev.txt
+
+      - name: add podman to the environment
+        shell: bash -l {0}
+        run: |
+          conda install podman
 
       - name: check env
         shell: bash -l {0}
