@@ -62,7 +62,7 @@ jobs:
       - name: add podman to the environment
         shell: bash -l {0}
         run: |
-          conda install podman
+          conda install podman -c conda-forge
 
       - name: check env
         shell: bash -l {0}
