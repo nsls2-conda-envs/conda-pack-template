@@ -2,8 +2,7 @@ name : test_n2sn
 
 on:
   # push:
-  # pull_request:
-  pull_request_target:
+  pull_request:
 
 jobs:
   generate_conda_packd_envs:
