@@ -32,7 +32,6 @@ jobs:
           # account with the token above, that is used to upload files, and to
           # search by the owner id.
           export ZENODO_OWNER_ID="40261"  # mrakitin's owner id on sandbox.zenodo.org
-          export DOCKER_BINARY="podman"
           echo "ZENODO_OWNER_ID=${ZENODO_OWNER_ID}" >> $GITHUB_ENV
           echo "DOCKER_BINARY=${DOCKER_BINARY}" >> $GITHUB_ENV
 
