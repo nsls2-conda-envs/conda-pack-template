@@ -62,7 +62,8 @@ jobs:
       - name: add podman to the environment
         shell: bash -l {0}
         run: |
-          conda install podman -c conda-forge
+          sudo apt-get -y update
+          sudo apt-get -y install podman
 
       - name: check env
         shell: bash -l {0}
