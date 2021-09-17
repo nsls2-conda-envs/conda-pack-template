@@ -33,6 +33,8 @@ jobs:
           # search by the owner id.
           export ZENODO_OWNER_ID="40261"  # mrakitin's owner id on sandbox.zenodo.org
           echo "ZENODO_OWNER_ID=${ZENODO_OWNER_ID}" >> $GITHUB_ENV
+
+          export DOCKER_BINARY="podman"
           echo "DOCKER_BINARY=${DOCKER_BINARY}" >> $GITHUB_ENV
 
       - name: checkout the code
