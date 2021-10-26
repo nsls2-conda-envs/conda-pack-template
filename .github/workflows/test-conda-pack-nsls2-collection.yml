@@ -76,18 +76,18 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          dockerfile=$(python3 render.py -c configs/nsls2-collection.yml -f Dockerfile.j2)
-          runner=$(python3 render.py -c configs/nsls2-collection.yml -f runner.sh.j2)
+          dockerfile=$(python3 render.py -c configs/nsls2-collection-py37.yml -f Dockerfile.j2)
+          runner=$(python3 render.py -c configs/nsls2-collection-py37.yml -f runner.sh.j2)
           ls -la
           cat ${dockerfile}
           cat ${runner}
 
-      - name: run a build with Docker
+      - name: run a build with Docker/Podman
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          bash ./runner-nsls2-collection-2021-2.2.sh
+          bash ./runner-nsls2-collection-2021-3.0-py37.sh
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
