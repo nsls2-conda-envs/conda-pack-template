@@ -78,16 +78,20 @@ jobs:
           set -vxeuo pipefail
           dockerfile=$(python3 render.py -c configs/nsls2-collection-py37.yml -f Dockerfile.j2)
           runner=$(python3 render.py -c configs/nsls2-collection-py37.yml -f runner.sh.j2)
+          echo "${dockerfile}"
+          echo "${runner}"
           ls -la
-          cat ${dockerfile}
-          cat ${runner}
+          cat "${dockerfile}"
+          cat "${runner}"
+          export CONDA_PACK_TEMPLATE_RUNNER="${runner}"
+          echo "CONDA_PACK_TEMPLATE_RUNNER=${CONDA_PACK_TEMPLATE_RUNNER}" >> $GITHUB_ENV
 
       - name: run a build with Docker/Podman
         shell: bash -l {0}
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          bash ./runner-nsls2-collection-2021-3.0-py37.sh
+          bash ${CONDA_PACK_TEMPLATE_RUNNER}
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/

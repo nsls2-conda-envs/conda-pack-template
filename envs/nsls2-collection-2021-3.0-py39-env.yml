@@ -95,7 +95,7 @@ dependencies:
   - pystackreg
   - python
   - python-graphviz
-  - pyxrf >=1.0.9
+  - pyxrf >=1.0.10
   - pyzbar  # [not win]
   - qt >=5.9.0
   - redis-py
@@ -107,6 +107,7 @@ dependencies:
   - scipy
   - sixtools
   - slackclient
+  - smi-analysis
   - suitcase-csv
   - suitcase-json-metadata
   - suitcase-jsonl
