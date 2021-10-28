@@ -1,6 +1,6 @@
 docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
-env_name: "nsls2-collection-2021-2.2-py39"
-conda_env_file: "nsls2-collection-2021-2.2-py39-env.yml"
+env_name: "nsls2-collection-2021-3.0-py39"
+conda_env_file: "nsls2-collection-2021-3.0-py39-env.yml"
 conda_binary: "mamba"
 python_version: "3.9"
 pkg_name: ""
@@ -21,9 +21,7 @@ zenodo_metadata:
     title: "NSLS-II collection conda environment"
     upload_type: "software"
     description: "NSLS-II collection conda environment"
-    version: 2021-2.2
+    version: 2021-3.0
     creators:
       - name: Rakitin, Maksim
         affiliation: "Brookhaven National Laboratory"
-      - name: Gedell, John
-        affiliation: "St. Joseph's College"
