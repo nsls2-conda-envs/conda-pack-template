@@ -31,6 +31,7 @@ dependencies:
   - dictdiffer
   - distributed
   - doi2bib
+  - dpcmaps
   # - edrixs
   - eiger-io
   - event-model >=1.17.2
