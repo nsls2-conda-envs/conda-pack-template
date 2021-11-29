@@ -37,6 +37,7 @@ def fix_docker_binary(func):
     @functools.wraps(func)
     def wrapper(params):
         params = func(params)
+
         docker_binary = os.getenv("DOCKER_BINARY", params["docker_binary"])
         params["docker_binary"] = docker_binary
         return func(params)
