@@ -1,5 +1,5 @@
 docker_image: "quay.io/condaforge/linux-anvil-comp7:latest"
-env_name: "tomviz-20211129"
+env_name: "tomviz-{{ today }}"
 conda_binary: "mamba"
 python_version: "3.7"
 pkg_name: "tomviz"

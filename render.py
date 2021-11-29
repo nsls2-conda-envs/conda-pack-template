@@ -1,4 +1,6 @@
 import argparse
+import datetime
+import functools
 import os
 
 import yaml
@@ -31,9 +33,33 @@ def read_params(config_file):
     return params
 
 
-def fix_docker_binary(params):
-    docker_binary = os.getenv("DOCKER_BINARY", params["docker_binary"])
-    params["docker_binary"] = docker_binary
+def fix_docker_binary(func):
+    @functools.wraps(func)
+    def wrapper(params):
+        params = func(params)
+        docker_binary = os.getenv("DOCKER_BINARY", params["docker_binary"])
+        params["docker_binary"] = docker_binary
+        return func(params)
+    return wrapper
+
+
+def render_dynamic_name(func):
+    @functools.wraps(func)
+    def wrapper(params):
+        params = func(params)
+
+        # Render dynamic parts of the parametrized environment name:
+        now = datetime.datetime.now()
+        today = datetime.datetime.strftime(now, "%Y%m%d")
+        template = Template(params['env_name'])
+        params['env_name'] = template.render(today=today)
+        return func(params)
+    return wrapper
+
+
+@render_dynamic_name
+@fix_docker_binary
+def update_params(params):
     return params
 
 
@@ -197,7 +223,10 @@ if __name__ == "__main__":
         zenodo_url = ZENODO_URL
 
     params = read_params(args.config_file)
-    params = fix_docker_binary(params)
+
+    # Update parameters by applying decorators:
+    params = update_params(params)
+
     templates_dir = validate_templates_dir(args.templates_dir)
 
     template_files = args.template_files
