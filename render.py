@@ -40,6 +40,7 @@ def fix_docker_binary(func):
         docker_binary = os.getenv("DOCKER_BINARY", params["docker_binary"])
         params["docker_binary"] = docker_binary
         return func(params)
+
     return wrapper
 
 
@@ -51,9 +52,10 @@ def render_dynamic_name(func):
         # Render dynamic parts of the parametrized environment name:
         now = datetime.datetime.now()
         today = datetime.datetime.strftime(now, "%Y%m%d")
-        template = Template(params['env_name'])
-        params['env_name'] = template.render(today=today)
+        template = Template(params["env_name"])
+        params["env_name"] = template.render(today=today)
         return func(params)
+
     return wrapper
 
 
