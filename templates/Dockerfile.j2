@@ -23,10 +23,10 @@ COPY export.sh ${HOME}/export.sh
 RUN source /opt/conda/etc/profile.d/conda.sh && \
     conda install -y ${channels} conda mamba && \
     {% if conda_env_file -%}
-    {{ conda_binary }} env create -p /opt/conda_envs/${env_name} --file=${HOME}/${conda_env_file}{% else -%}
-    {{ conda_binary }} create -p /opt/conda_envs/${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}{% endif %}
+    {{ conda_binary }} env create -n ${env_name} --file=${HOME}/${conda_env_file}{% else -%}
+    {{ conda_binary }} create -n ${env_name} ${channels} --override-channels -y python=${python_version} conda-pack ${pkg_name} ${extra_packages}{% endif %}
 
 {%- if extra_cmd_after_install %}{{ '\n' }}
 RUN source /opt/conda/etc/profile.d/conda.sh && \
-    {{ conda_binary }} install -y --override-channels ${channels} -p /opt/conda_envs/${env_name} conda-pack ${extra_packages} && \
-    {{ extra_cmd_after_install }} -p /opt/conda_envs/${env_name}{% endif %}
+    {{ conda_binary }} install -y --override-channels ${channels} -n ${env_name} conda-pack ${extra_packages} && \
+    {{ extra_cmd_after_install }} -n ${env_name}{% endif %}
