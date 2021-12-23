@@ -9,7 +9,7 @@ docker_upload:
   - ghcr
   - dockerhub
   - quay
-zenodo_upload: "yes"
+zenodo_upload: "no"
 zenodo_metadata:
   metadata:
     title: "User tools for the NSLS-II Science Network"
