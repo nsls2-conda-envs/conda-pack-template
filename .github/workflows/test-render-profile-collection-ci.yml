@@ -62,6 +62,6 @@ jobs:
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
           # Hard-coded sandbox entry from https://sandbox.zenodo.org/record/893295:
-          rendered_file=$(python render.py -c configs/n2sn.yml -f nsls2-collection-profile-collection-ci.yml.j2 -z 893295 -s)
+          rendered_file=$(python render.py -c configs/nsls2-collection-py39.yml -f nsls2-collection-profile-collection-ci.yml.j2 -z 5802039)
           ls -laF
           cat ${rendered_file}
