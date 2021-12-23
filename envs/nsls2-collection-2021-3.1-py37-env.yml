@@ -14,8 +14,8 @@ dependencies:
   - arvpyf
   - attrs >=18.0
   - black
-  - bluesky >=1.8.1
-  - bluesky-kafka >=0.6.0  # [not win]
+  - bluesky >=1.8.2
+  - bluesky-kafka >=0.8.0  # [not win]
   - bluesky-live >=0.0.8
   - bluesky-widgets >=0.0.10
   - boto3
@@ -69,7 +69,7 @@ dependencies:
   - nexpy >=0.14.1
   - nodejs
   - nsls2-detector-handlers >=0.0.2
-  - nslsii >=0.2.1
+  - nslsii >=0.3.0
   - numexpr
   - numpy >=1.14.0
   - oct2py
