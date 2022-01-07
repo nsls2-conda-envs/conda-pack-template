@@ -1,0 +1,24 @@
+name: lsdc-server
+channels:
+  - conda-forge
+dependencies:
+  - python >=3.7,<3.8
+  - conda-pack
+  - amostra ==0.2
+  - analysisstore
+  - area-detector-handlers
+  - bluesky >=1.8.1
+  - conftrak
+  - databroker >=1.2.0
+  - event-model >=1.17.2
+  - hdf5-external-filter-plugins-bitshuffle
+  - hdf5-external-filter-plugins-lz4
+  - ipython
+  - ispyb ==5.6.2
+  - matplotlib >=3.1.0,!=3.3
+  - nslsii >=0.2.1
+  - numpy >=1.14.0
+  - nyxtools
+  - ophyd >=1.6.3
+  - python-confluent-kafka
+  - xlrd
