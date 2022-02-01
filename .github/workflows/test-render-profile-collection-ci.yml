@@ -2,7 +2,8 @@ name : test_render_profile_collection_ci
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
 
 jobs:
   render_profile_collection_ci_config:
