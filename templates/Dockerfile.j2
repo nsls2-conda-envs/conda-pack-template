@@ -29,5 +29,5 @@ RUN source /opt/conda/etc/profile.d/conda.sh && \
 {%- if extra_cmd_after_install %}{{ '\n' }}
 RUN source /opt/conda/etc/profile.d/conda.sh && \
     {{ conda_binary }} install -y --override-channels ${channels} -n ${env_name} conda-pack ${extra_packages} && \
-    {{ conda_binary }} activate ${env_name} && \
+    conda activate ${env_name} && \
     {{ extra_cmd_after_install }} -n ${env_name}{% endif %}
