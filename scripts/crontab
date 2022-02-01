@@ -1,3 +1,5 @@
 SHELL=/bin/bash
 
+# https://crontab.guru/#*/5_*_*_*_*
+# At every 5th minute.
 */5 * * * * /bin/sync-conda-envs.sh

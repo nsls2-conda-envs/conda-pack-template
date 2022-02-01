@@ -12,7 +12,7 @@ for ext in ${allowed_extensions[@]}; do
     new_files_exist=$(ls -1 ${staged_envs_path}/*${ext} 2>/dev/null)
     if [ ! -z "${new_files_exist}" ]; then
         echo -e "Files with extension '${ext}' exist:\n\n${new_files_exist}\n"
-        cp -v ${staged_envs_path}/*${ext} ${conda_envs_path}/
+        mv -v ${staged_envs_path}/*${ext} ${conda_envs_path}/
         chown -v ${owner}:${group} ${conda_envs_path}/*
         chmod -v 664 ${conda_envs_path}/*
     else
