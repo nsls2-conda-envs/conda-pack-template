@@ -129,7 +129,10 @@ dependencies:
   - tzlocal !=3.0
   - xlrd
   - xlwt
-  - xmidas >=0.1.1
+  # TODO: xmidas has a dependency of scipy>1.7 that is conflicting with some
+  # packages in this env (also conflicts with scipy>1.6). Need to resolve it
+  # first before including of the xmidas package.
+  # - xmidas >=0.1.1
   - xpdan >=0.8.2
   - xray-vision >=0.1.1
   - xraylarch
