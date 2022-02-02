@@ -150,7 +150,10 @@ dependencies:
   - bloptools
   - bluesky-darkframes
   - caproto
-  - happi
+  # Exclude `happi` for now due to the following error:
+  # /opt/conda/envs/nsls2-collection-2022-1.0-py37/etc/conda/activate.d/happi.sh: line 5: syntax error near unexpected token `<'
+  # /opt/conda/envs/nsls2-collection-2022-1.0-py37/etc/conda/activate.d/happi.sh: line 5: `  _fzf_complete --multi --reverse --prompt="happi> " -- "$@" < <('
+  # - happi
   - pexpect
   # - pydm
   - pyolog >=4.5.0
