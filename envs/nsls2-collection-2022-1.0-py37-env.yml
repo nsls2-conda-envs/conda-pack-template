@@ -75,7 +75,7 @@ dependencies:
   - nslsii >=0.3.2
   - numexpr
   - numpy >=1.14.0
-  - nyxtools >=0.0.2
+  - nyxtools >=0.0.3
   - oct2py
   - opencv
   - openpyxl
