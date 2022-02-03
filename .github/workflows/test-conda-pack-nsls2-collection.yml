@@ -98,3 +98,11 @@ jobs:
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
+
+      # https://github.com/actions/upload-artifact
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nsls2-collection-py${{ matrix.python-version }}
+          path: artifacts
+          retention-days: 7
