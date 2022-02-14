@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.7", "3.9"]
       fail-fast: false
 
     steps:
@@ -34,6 +34,9 @@ jobs:
           # search by the owner id.
           export ZENODO_OWNER_ID="40261"  # mrakitin's owner id on sandbox.zenodo.org
           echo "ZENODO_OWNER_ID=${ZENODO_OWNER_ID}" >> $GITHUB_ENV
+
+          export PYTHONVER=$(echo ${{ matrix.python-version }} | sed 's/\.//g')
+          echo "PYTHONVER=${PYTHONVER}" >> $GITHUB_ENV
 
       - name: checkout the code
         uses: actions/checkout@v2
@@ -76,8 +79,8 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          dockerfile=$(python3 render.py -c configs/nsls2-collection-py37.yml -f Dockerfile.j2)
-          runner=$(python3 render.py -c configs/nsls2-collection-py37.yml -f runner.sh.j2)
+          dockerfile=$(python3 render.py -c configs/nsls2-collection-py${PYTHONVER}.yml -f Dockerfile.j2)
+          runner=$(python3 render.py -c configs/nsls2-collection-py${PYTHONVER}.yml -f runner.sh.j2)
           echo "${dockerfile}"
           echo "${runner}"
           ls -la
@@ -95,3 +98,11 @@ jobs:
           ls -laF
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
+
+      # https://github.com/actions/upload-artifact
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nsls2-collection-py${{ matrix.python-version }}
+          path: artifacts
+          retention-days: 7
