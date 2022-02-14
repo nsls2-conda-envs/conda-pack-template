@@ -1,7 +1,7 @@
 docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
 conda_binary: "mamba"
 conda_env_file: "lsdc-server-env.yml"
-env_name: "lsdc-server-2022-1.1"
+env_name: "lsdc-server-2022-1.2"
 python_version: "3.7"
 pkg_name: ""
 pkg_version: ""
