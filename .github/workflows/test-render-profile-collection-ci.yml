@@ -62,6 +62,6 @@ jobs:
         run: |
           # For reference: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html.
           set -vxeuo pipefail
-          rendered_file=$(python render.py -c configs/nsls2-collection-py39.yml -f nsls2-collection-profile-collection-ci.yml.j2 -z 5802039)
+          rendered_file=$(python render.py -c configs/nsls2-collection-py39.yml -f nsls2-collection-profile-collection-ci.yml.j2 -z 5954331)
           ls -laF
           cat ${rendered_file}
