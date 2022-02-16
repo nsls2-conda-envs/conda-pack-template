@@ -2,8 +2,7 @@ name : test_render_profile_collection_ci
 
 on:
   push:
-    branches:
-      - main
+  pull_request:
 
 jobs:
   render_profile_collection_ci_config:
