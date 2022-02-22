@@ -1,0 +1,7 @@
+docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
+env_name: "lsdc-processing-2022-1.0"
+python_version: "3.7"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "conftrak>=0.0.7 analysisstore>=0.0.6 amostra<1,>=0.2.3 ispyb==5.6.2 pyepics"
+channels: "-c conda-forge"
