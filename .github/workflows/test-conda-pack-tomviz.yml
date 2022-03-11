@@ -78,6 +78,7 @@ jobs:
           set -vxeuo pipefail
           bash ${CONDA_PACK_TEMPLATE_RUNNER}
           ls -laF
+          cp -v Dockerfile ${CONDA_PACK_TEMPLATE_RUNNER} artifacts/
           sudo chown -v $USER: artifacts/*
           ls -laF artifacts/
 
