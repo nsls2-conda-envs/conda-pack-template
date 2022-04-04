@@ -16,9 +16,10 @@ dependencies:
   - ipython
   - ispyb ==5.6.2
   - matplotlib >=3.1.0,!=3.3
+  - mxtools >=0.0.5
   - nslsii >=0.2.1
   - numpy >=1.14.0
-  - nyxtools
+  - nyxtools >=0.0.7
   - ophyd >=1.6.3
   - python-confluent-kafka
   - xlrd
