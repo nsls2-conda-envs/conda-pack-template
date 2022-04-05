@@ -19,7 +19,7 @@ dependencies:
   - mxtools >=0.0.5
   - nslsii >=0.2.1
   - numpy >=1.14.0
-  - nyxtools >=0.0.7
+  - nyxtools >=0.0.8
   - ophyd >=1.6.3
   - python-confluent-kafka
   - xlrd
