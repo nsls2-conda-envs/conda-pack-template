@@ -1,4 +1,4 @@
-name: 2022-2.0-py37
+name: 2022-2.0-tiled
 channels:
   - conda-forge
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   #            Dependencies from the `nsls2-analysis` metapackage             #
   #                                                                           #
   #***************************************************************************#
-  - python >=3.7,<3.8
+  - python >=3.9,<3.10
   - amostra <=1.0
   - ansiwrap
   - area-detector-handlers
