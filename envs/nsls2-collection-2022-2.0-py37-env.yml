@@ -25,7 +25,7 @@ dependencies:
   - conda-pack
   - csxtools
   - dask
-  - databroker >=1.2.0
+  - databroker >=1.2.5
   - databroker-pack
   - dictdiffer
   - distributed
