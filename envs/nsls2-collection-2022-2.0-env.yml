@@ -18,6 +18,7 @@ dependencies:
   - bluesky-kafka >=0.9.0  # [not win]
   - bluesky-live >=0.0.8
   - bluesky-queueserver
+  - bluesky-queueserver-api
   - bluesky-widgets >=0.0.10
   - boto3
   - chxtools
@@ -109,7 +110,7 @@ dependencies:
   - scikit-beam >=0.0.24
   - scikit-learn
   - scipy
-  - silx >=0.15.2,<1
+  - silx >=0.15.2
   - sixtools
   - slackclient
   - smi-analysis
