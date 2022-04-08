@@ -80,7 +80,7 @@ dependencies:
   - oct2py
   - opencv
   - openpyxl
-  - ophyd >=1.6.3
+  - ophyd >=1.6.4
   - papermill
   - pdfstream
   - peakutils
