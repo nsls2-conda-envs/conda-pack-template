@@ -15,7 +15,7 @@ dependencies:
   - attrs >=18.0
   - black
   - bluesky >=1.8.2
-  - bluesky-kafka >=0.8.0  # [not win]
+  - bluesky-kafka >=0.9.0  # [not win]
   - bluesky-live >=0.0.8
   - bluesky-queueserver
   - bluesky-widgets >=0.0.10
