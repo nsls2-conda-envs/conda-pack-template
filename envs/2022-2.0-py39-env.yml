@@ -1,4 +1,4 @@
-name: 2022-2.0
+name: 2022-2.0-py39
 channels:
   - conda-forge
 dependencies:

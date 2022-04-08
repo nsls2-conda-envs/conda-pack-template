@@ -1,4 +1,4 @@
-name: 2022-2.0-tiled
+name: 2022-2.0-py39-tiled
 channels:
   - conda-forge
 dependencies:
