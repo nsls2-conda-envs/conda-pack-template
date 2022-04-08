@@ -1,6 +1,6 @@
 docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
-env_name: "2022-2.0-py39"
-conda_env_file: "2022-2.0-py39-env.yml"
+env_name: "2022-2.0-py39-tiled"
+conda_env_file: "2022-1.0-py39-tiled-env.yml"
 conda_binary: "mamba"
 python_version: "3.9"
 pkg_name: ""
