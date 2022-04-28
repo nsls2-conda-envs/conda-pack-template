@@ -149,6 +149,7 @@ def create_new_version(
     r = requests.post(
         url,
         params={"access_token": token},
+        headers={"Content-Type": "application/json"},
     )
     r.raise_for_status()
 
