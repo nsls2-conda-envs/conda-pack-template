@@ -21,7 +21,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-import conda_pack_template
 import sphinx_rtd_theme
 
 # -- General configuration ------------------------------------------------
