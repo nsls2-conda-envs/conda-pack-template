@@ -39,7 +39,7 @@ jobs:
           # sudo apt-get update && sudo apt-get install pandoc
           conda env list
           pip install --upgrade pip wheel
-          pip install -v .
+          pip install -r requirements.txt
           pip install -r requirements-dev.txt
           pip list
           conda list
