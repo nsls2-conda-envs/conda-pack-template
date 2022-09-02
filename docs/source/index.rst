@@ -6,8 +6,11 @@
 conda-pack-template
 ===================
 
-The ``conda-pack-template`` is a light framework for generation and packaging
-of custom conda environments.
+The ``conda-pack-template`` is a set of tools for generation and packaging of
+custom conda environments. Docker and conda are used to generate conda
+environments. The packaging is done with the `conda-pack
+<https://conda.github.io/conda-pack>`_ tool available from PyPI and
+conda-forge.
 
 The conda environments are specified by a configuration YAML file, e.g.
 ``config-py39.yml`` from
@@ -67,3 +70,4 @@ and the optional parameters are:
    :caption: Links
 
    conda-pack-template GitHub repo <https://github.com/nsls2-conda-envs/conda-pack-template>
+   conda-pack docs <https://conda.github.io/conda-pack>
