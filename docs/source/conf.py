@@ -69,7 +69,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "conda-pack-template"
-copyright = "2022, nsls2-conda-envs"
+copyright = "2022, Brookhaven National Laboratory"
 author = "nsls2-conda-envs"
 
 # The version info for the project you're documenting, acts as replacement for
