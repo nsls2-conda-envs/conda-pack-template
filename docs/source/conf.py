@@ -21,7 +21,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-import sphinx_rtd_theme
+import cloud_sptheme as sptheme
 
 # -- General configuration ------------------------------------------------
 
@@ -107,7 +107,6 @@ todo_include_todos = False
 # a list of builtin themes.
 #
 html_theme = "cloud"
-import cloud_sptheme as sptheme
 html_theme_path = [sptheme.get_theme_dir()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
