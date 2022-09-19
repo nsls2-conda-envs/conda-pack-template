@@ -18,15 +18,15 @@ https://github.com/nsls2-conda-envs/testenv/tree/main/configs:
 
 .. code::
 
-    docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
-    env_name: "py39"
-    conda_env_file: "env-py39.yml"
-    conda_binary: "mamba"
-    python_version: "3.9"
-    pkg_name: ""
-    pkg_version: ""
-    extra_packages: "mamba"
-    channels: "-c conda-forge"
+   docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
+   env_name: "py39"
+   conda_env_file: "env-py39.yml"
+   conda_binary: "mamba"
+   python_version: "3.9"
+   pkg_name: ""
+   pkg_version: ""
+   extra_packages: "mamba"
+   channels: "-c conda-forge"
 
 where the required parameters are:
 
@@ -52,6 +52,15 @@ and the optional parameters are:
   specify the command to run in Docker before conda environment installation
 - ``extra_cmd_after_install`` (not listed in the above example) is used to
   specify the command to run in Docker after conda environment installation
+
+Here are examples of ``extra_cmd_before_install`` and
+``extra_cmd_after_install``:
+
+.. code::
+
+   extra_cmd_before_install: "yum install mesa-libGL -y"
+   extra_cmd_after_install: "conda remove perl --force -y"
+
 
 .. note::
 
