@@ -3,3 +3,4 @@ __pycache__/
 artifacts/
 gen-conda-packed-env-*.sh
 *.swp
+docs/build/

@@ -1,0 +1,57 @@
+name: Documentation
+
+on: [push, pull_request]
+
+jobs:
+  build_docs:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+      fail-fast: false
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Set env vars
+        run: |
+          export REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}  # just the repo, as opposed to org/repo
+          echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }} with conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: ${{ env.REPOSITORY_NAME }}-py${{ matrix.python-version }}
+          auto-update-conda: true
+          miniconda-version: "latest"
+          python-version: ${{ matrix.python-version }}
+          mamba-version: "*"
+          channels: conda-forge
+
+      - name: Install documentation-building requirements
+        run: |
+          set -vxeo pipefail
+          # sudo apt-get update && sudo apt-get install pandoc
+          conda env list
+          pip install --upgrade pip wheel
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          pip list
+          conda list
+
+      - name: Build Docs
+        run: |
+          set -vxeuo pipefail
+          make -C docs/ html
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.REPOSITORY_NAME }}-docs
+          path: docs/build/html/
