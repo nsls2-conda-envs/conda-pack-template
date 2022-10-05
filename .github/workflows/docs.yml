@@ -55,3 +55,13 @@ jobs:
         with:
           name: ${{ env.REPOSITORY_NAME }}-docs
           path: docs/build/html/
+
+      - name: Publish Docs
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/build/html
+          keep_files: true  # Keep old files.
+          force_orphan: false  # Keep git history.
