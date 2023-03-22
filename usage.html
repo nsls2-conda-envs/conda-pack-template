@@ -16,9 +16,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
@@ -91,7 +88,7 @@ target. This means that environments built on Windows can’t be relocated to
 Linux.</p>
 </div>
 <p>At top level of the repository, generate the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> with this command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 render.py -c configs/&lt;env-name&gt;.yml -f Dockerfile.j2
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>render.py<span class="w"> </span>-c<span class="w"> </span>configs/&lt;env-name&gt;.yml<span class="w"> </span>-f<span class="w"> </span>Dockerfile.j2
 </pre></div>
 </div>
 <p>The resulting <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> will contain the instructions on how to build the
@@ -106,14 +103,14 @@ packages and extra-packages.</p>
 that image with a mounted host directory, and (iii) export the artifacts to the
 <code class="docutils literal notranslate"><span class="pre">artifacts/</span></code> directory on the host system.</p>
 <p>To generate the <code class="docutils literal notranslate"><span class="pre">runner-*.sh</span></code> file, run this command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 render.py -c configs/&lt;env-name&gt;.yml -f runner.sh.j2
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>render.py<span class="w"> </span>-c<span class="w"> </span>configs/&lt;env-name&gt;.yml<span class="w"> </span>-f<span class="w"> </span>runner.sh.j2
 </pre></div>
 </div>
 </section>
 <section id="run-the-build">
 <h2>Run the build<a class="headerlink" href="#run-the-build" title="Permalink to this heading">¶</a></h2>
 <p>Run the resulting <code class="docutils literal notranslate"><span class="pre">runner-*.sh</span></code> file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash ./runner-&lt;env-name&gt;.sh
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>./runner-&lt;env-name&gt;.sh
 </pre></div>
 </div>
 <p>After running this script, the following files will be produced in the
@@ -207,7 +204,7 @@ which lists all the packages and their versions in the conda environment.</p></l
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Brookhaven National Laboratory.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
