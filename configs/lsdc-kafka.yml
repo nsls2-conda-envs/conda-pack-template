@@ -1,5 +1,5 @@
-docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
-env_name: "lsdc-kafka-2022-1.0"
+docker_image: "quay.io/condaforge/linux-anvil-cos7-x86_64:latest"
+env_name: "lsdc-kafka-2023-2.0"
 python_version: "3.9"
 pkg_name: ""
 pkg_version: ""

@@ -1,5 +1,5 @@
-docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
-env_name: "lsdc-gui-2022-1.1"
+docker_image: "quay.io/condaforge/linux-anvil-cos7-x86_64:latest"
+env_name: "lsdc-gui-2023-2.0"
 conda_binary: "mamba"
 python_version: "3.6"
 pkg_name: ""
