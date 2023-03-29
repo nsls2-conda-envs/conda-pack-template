@@ -1,0 +1,8 @@
+docker_image: "quay.io/condaforge/linux-anvil-cos7-x86_64:latest"
+env_name: "lsdc-edna"
+conda_binary: "mamba"
+python_version: "2.7"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "fabio==0.4.0 scipy pillow openssl" 
+channels: "-c lightsource2-tag -c defaults"
