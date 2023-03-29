@@ -1,4 +1,4 @@
-docker_image: "nsls2/linux-anvil-cos7-x86_64:latest"
+docker_image: "quay.io/condaforge/linux-anvil-cos7-x86_64:latest"
 env_name: "lsdc-edna"
 conda_binary: "mamba"
 python_version: "2.7"
