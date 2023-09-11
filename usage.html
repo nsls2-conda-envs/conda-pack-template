@@ -1,25 +1,24 @@
 
 
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Usage &#8212; conda-pack-template  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
 
     
     
@@ -39,6 +38,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
@@ -50,6 +50,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
@@ -67,13 +70,13 @@
           <div class="body" role="main">
             
   <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h1>
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
 <p>The following steps will generate the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> and the <code class="docutils literal notranslate"><span class="pre">runner-*.sh</span></code>
 files (from the Jinja2 templates using the parameters from the YAML
 configuration file). These files will be used afterwards to run the build of
 the environment.</p>
 <section id="create-a-dockerfile">
-<h2>Create a Dockerfile<a class="headerlink" href="#create-a-dockerfile" title="Permalink to this heading">¶</a></h2>
+<h2>Create a Dockerfile<a class="headerlink" href="#create-a-dockerfile" title="Link to this heading">¶</a></h2>
 <p>In order to build the conda environment for a specific platform (e.g., Linux),
 we create a Docker image matching the target platform. Even if the environment
 is built on a specific Linux version, such as CentOS7, it can still be used for
@@ -97,7 +100,7 @@ environment is specified either via the environment file, or with the list of
 packages and extra-packages.</p>
 </section>
 <section id="create-a-runner-script">
-<h2>Create a runner script<a class="headerlink" href="#create-a-runner-script" title="Permalink to this heading">¶</a></h2>
+<h2>Create a runner script<a class="headerlink" href="#create-a-runner-script" title="Link to this heading">¶</a></h2>
 <p>The runner script is used to (i) build the Docker image based on the
 <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> from the previous step, (ii) run a Docker container based on
 that image with a mounted host directory, and (iii) export the artifacts to the
@@ -108,7 +111,7 @@ that image with a mounted host directory, and (iii) export the artifacts to the
 </div>
 </section>
 <section id="run-the-build">
-<h2>Run the build<a class="headerlink" href="#run-the-build" title="Permalink to this heading">¶</a></h2>
+<h2>Run the build<a class="headerlink" href="#run-the-build" title="Link to this heading">¶</a></h2>
 <p>Run the resulting <code class="docutils literal notranslate"><span class="pre">runner-*.sh</span></code> file:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>./runner-&lt;env-name&gt;.sh
 </pre></div>
@@ -146,6 +149,7 @@ which lists all the packages and their versions in the conda environment.</p></l
 <li class="toctree-l2"><a class="reference internal" href="#run-the-build">Run the build</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Links</span></p>
 <ul>
@@ -193,6 +197,9 @@ which lists all the packages and their versions in the conda environment.</p></l
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">conda-pack-template  documentation</a> &#187;</li>
@@ -203,8 +210,8 @@ which lists all the packages and their versions in the conda environment.</p></l
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Brookhaven National Laboratory.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.0.
+    &#169; Copyright 2022, Brookhaven National Laboratory.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

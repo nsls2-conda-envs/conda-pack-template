@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installation &#8212; conda-pack-template  documentation</title>
+    <title>Frequently Asked Questions &#8212; conda-pack-template  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -38,8 +38,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
-    <link rel="prev" title="conda-pack-template" href="index.html" /> 
+    <link rel="prev" title="Usage" href="usage.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
     <div class="relbar-top">
@@ -52,13 +51,10 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="usage.html" title="Usage"
-             accesskey="N">next</a> &nbsp; &nbsp;</li>
-        <li class="right" >
-          <a href="index.html" title="conda-pack-template"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">conda-pack-template  documentation</a> &#187;</li>
 
-        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Frequently Asked Questions</a></li> 
       </ul>
     </div>
     </div>
@@ -69,30 +65,46 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
-<p>The system requires Docker or Podman to run successfully. Please follow the
-corresponding instructions at:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://docs.docker.com/get-docker/">https://docs.docker.com/get-docker/</a></p></li>
-<li><p><a class="reference external" href="https://podman.io/getting-started/">https://podman.io/getting-started/</a></p></li>
-</ul>
-<p>Then, at the command line run the following command to install dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m pip install -r requirements.txt
+  <section id="frequently-asked-questions">
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Link to this heading">¶</a></h1>
+<section id="synchronize-environment-files">
+<h2>Synchronize environment files<a class="headerlink" href="#synchronize-environment-files" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">nsls2-collection</span></code> and <code class="docutils literal notranslate"><span class="pre">nsls2-collection-tiled</span></code> repositories are very
+similar in terms of the packages and should be updated in tandem. The
+difference is only in the <code class="docutils literal notranslate"><span class="pre">databroker</span></code> package which should have versions
+<code class="docutils literal notranslate"><span class="pre">&gt;=1.2.5,&lt;2.0.0a</span></code> in the <code class="docutils literal notranslate"><span class="pre">nsls2-collection</span></code> repository, and <code class="docutils literal notranslate"><span class="pre">&gt;=2.0.0b</span></code> in
+the <code class="docutils literal notranslate"><span class="pre">nsls2-collection-tiled</span></code> repository. The former is also coming with the
+<code class="docutils literal notranslate"><span class="pre">databroker-pack</span></code> and <code class="docutils literal notranslate"><span class="pre">intake</span></code> packages while the latter contains the
+<code class="docutils literal notranslate"><span class="pre">tiled</span></code> package (hence the repository name).</p>
+<p>When creating a new version of the conda environments, e.g. <code class="docutils literal notranslate"><span class="pre">2023-3.0-py310</span></code>,
+one would create a new feature branch from <code class="docutils literal notranslate"><span class="pre">main</span></code>, then update the
+<code class="docutils literal notranslate"><span class="pre">configs/config-py310.yml</span></code> file with the corresponding version as well as the
+<code class="docutils literal notranslate"><span class="pre">envs/env-py310.yml</span></code> file with the new pins of the existing packages and/or
+new packages. Once this was done for one repository (preferably via one
+commit), e.g. for <code class="docutils literal notranslate"><span class="pre">nsls2-collection</span></code>, create a patch file as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>format-patch<span class="w"> </span>-1
 </pre></div>
 </div>
-<p>Current list of dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span><span class="o">-</span><span class="n">pack</span>
-<span class="n">ipython</span>
-<span class="n">jinja2</span>
-<span class="n">pyyaml</span>
-<span class="n">pyzenodo3</span>
-<span class="n">requests</span>
-<span class="n">tabulate</span>
+<p>This will produce a file such as <code class="docutils literal notranslate"><span class="pre">0001-2023-3.0-env.patch</span></code>. Then, navigate to
+another repository (<code class="docutils literal notranslate"><span class="pre">nsls2-collection-tiled</span></code>) and apply this patch as
+follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>patch<span class="w"> </span>-p1<span class="w"> </span>&lt;<span class="w"> </span>../nsls2-collection/0001-2023-3.0-env.patch
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">jinja2</span></code>, and <code class="docutils literal notranslate"><span class="pre">pyyaml</span></code> packages are required dependencies, the rest is
-optional for convenience.</p>
+<p>This may result in an incomplete application of the patch, as there may be
+conflicting changes applied to both repositories in the same files/places
+(e.g., the environment names will be <code class="docutils literal notranslate"><span class="pre">2023-3.0-py310</span></code> vs.
+<code class="docutils literal notranslate"><span class="pre">2023-3.0-py310-tiled</span></code> in both config and environment files). Nevertheless,
+the rest of the updates will be applied correctly. You may consider separating
+commits for the environment version update and the packages version update to
+reduce the number of conflicts.</p>
+<p>It is recommended always to check the difference between the repositories.
+Change to the common directory where both repositories are cloned and then run
+the command such as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>diff<span class="w"> </span>nsls2-collection/envs/env-py310.yml<span class="w"> </span>nsls2-collection-tiled/envs/env-py310.yml
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -105,9 +117,12 @@ optional for convenience.</p>
 <div class="sphinx-toc sphinxglobaltoc">
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#synchronize-environment-files">Synchronize environment files</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Links</span></p>
 <ul>
@@ -156,13 +171,10 @@ optional for convenience.</p>
              >index</a></li>
         <li class="right" >
           <a href="usage.html" title="Usage"
-             >next</a> &nbsp; &nbsp;</li>
-        <li class="right" >
-          <a href="index.html" title="conda-pack-template"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">conda-pack-template  documentation</a> &#187;</li>
 
-        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Frequently Asked Questions</a></li> 
       </ul>
     </div>
     </div>
