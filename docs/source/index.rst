@@ -3,6 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+===================
 conda-pack-template
 ===================
 
@@ -73,6 +74,7 @@ Here are examples of ``extra_cmd_before_install`` and
 
    installation
    usage
+   faq
 
 .. toctree::
    :hidden:
