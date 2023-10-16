@@ -3,7 +3,7 @@
 # No `-u` to avoid potential unbound variable errors on activation/deactivation
 #   (libxml2, pydm, etc.)
 # set -vxeuo pipefail
-set -vxeuo pipefail
+set -vxeo pipefail
 
 ls -laF ${build_dir}
 
