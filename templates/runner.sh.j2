@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -vxeuo pipefail
+set -vxeo pipefail
 
 {% for key, value in params.items() -%}
 export {{key}}="{{value}}"
