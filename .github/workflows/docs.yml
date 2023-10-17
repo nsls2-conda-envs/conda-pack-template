@@ -32,7 +32,7 @@ jobs:
           auto-update-conda: true
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
-          mamba-version: "*"
+          mamba-version: "1.5.1
           channels: conda-forge
 
       - name: Install documentation-building requirements
