@@ -1,0 +1,8 @@
+docker_image: "quay.io/condaforge/linux-anvil-cos7-x86_64:latest"
+env_name: "eman2-2.99.54"
+python_version: "3.10"
+pkg_name: ""
+pkg_version: ""
+extra_packages: "eman-dev"
+channels: "-c cryoem -c conda-forge"
+extra_cmd_before_install: "yum install mesa-libGL -y"
