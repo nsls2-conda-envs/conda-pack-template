@@ -6,7 +6,7 @@ conda_envs_path="/nsls2/repos/conda/environments"
 owner="nsls2data"
 group="nsls2software"
 
-allowed_extensions=(".tar.gz" ".yml" "md5sum.txt" "sha256sum.txt")
+allowed_extensions=(".tar.gz" ".yml" ".yml.txt" "md5sum.txt" "sha256sum.txt")
 
 for ext in ${allowed_extensions[@]}; do
     new_files_exist=$(ls -1 ${staged_envs_path}/*${ext} 2>/dev/null)
